@@ -18,7 +18,7 @@
 				this.refresh_counters = this.createCountersRefresh(1);
 				this.filter = new CTabFilter($('#reports_availreport_filter')[0], filter_options);
 				var filter_item = this.filter._active_item;
-				this.filter.on(TABFILTER_EVENT_URLSET, (ev) => {
+				this.filter.on(TABFILTERITEM_EVENT_EXPAND => {
 					// const url = new URL(this.refresh_url, 'http://example.com');
 					// for(var key of url.searchParams.keys()) {
 					// 	if (key == 'from' || key == 'to') {
@@ -27,15 +27,15 @@
 					// }
 					// this.refresh_url=url.pathname.slice(1) + '?' + url.searchParams.toString();
 					// this.refresh();
-					let url = new URL(this.refresh_url, 'http://example.com');
-					for(var key of url.searchParams.keys()) {
-						if (key == 'from' || key == 'to') {
-							url.searchParams.set(key, data[key]);
-						}
-					}
+					// let url = new URL(this.refresh_url, 'http://example.com');
+					// for(var key of url.searchParams.keys()) {
+					// 	if (key == 'from' || key == 'to') {
+					// 		url.searchParams.set(key, data[key]);
+					// 	}
+					// }
 
-					this.refresh_url=url.pathname.slice(1) + '?' + url.searchParams.toString();
-					this.refresh();
+					// this.refresh_url=url.pathname.slice(1) + '?' + url.searchParams.toString();
+					// this.refresh();
 					// }
 					// let url = new Curl('', false);
 					// url.setArgument('action', 'availreport.view.refresh');
