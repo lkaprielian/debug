@@ -49,24 +49,26 @@ class CControllerBGAvailReportViewRefresh extends CControllerBGAvailReportView {
 
 		// $filter = static::FILTER_FIELDS_DEFAULT;
 
-		if ($this->getInput('filter_counters', 0)) {
-			$profile = (new CTabFilterProfile(static::FILTER_IDX, static::FILTER_FIELDS_DEFAULT))->read();
-			$filters = $this->hasInput('counter_index')
-				? [$profile->getTabFilter($this->getInput('counter_index'))]
-				: $profile->getTabsWithDefaults();
-			$data['filter_counters'] = [];
+		// if ($this->getInput('filter_counters', 0)) {
+		$profile = (new CTabFilterProfile(static::FILTER_IDX, static::FILTER_FIELDS_DEFAULT))->read();
+		// $filters = $this->hasInput('counter_index')
+		// 	? [$profile->getTabFilter($this->getInput('counter_index'))]
+		// 	: $profile->getTabsWithDefaults();
+		
+		$filters = $profile->getTabsWithDefaults();
+		// $data['filter_counters'] = [];
 
-			// foreach ($filters as $index => $tabfilter) {
-			// 	if (!$tabfilter['filter_custom_time']) {
-			// 		$tabfilter = [
-			// 			'from' => $profile->from,
-			// 			'to' => $profile->to
-			// 		] + $tabfilter;
-			// 	}
+		// foreach ($filters as $index => $tabfilter) {
+		// 	if (!$tabfilter['filter_custom_time']) {
+		// 		$tabfilter = [
+		// 			'from' => $profile->from,
+		// 			'to' => $profile->to
+		// 		] + $tabfilter;
+		// 	}
 
 			// 	$data['filter_counters'][$index] = $tabfilter['filter_show_counter'] ? $this->getCount($tabfilter) : 0;
 			// }
-		}
+		// }
 
 		$this->getInputs($filters, array_keys($filters));
 		$filter = $this->cleanInput($filters);
