@@ -51,29 +51,29 @@
 			}
 		}
 
-		availreportPage.prototype = {
-			createCountersRefresh: function(timeout) {
-				if (this.refresh_counters) {
-					clearTimeout(this.refresh_counters);
-					this.refresh_counters = null;
-				}
+		// availreportPage.prototype = {
+		// 	createCountersRefresh: function(timeout) {
+		// 		if (this.refresh_counters) {
+		// 			clearTimeout(this.refresh_counters);
+		// 			this.refresh_counters = null;
+		// 		}
 
-				return setTimeout(() => this.getFiltersCounters(), timeout);
-			},
-			getFiltersCounters: function() {
-				return $.post('zabbix.php', {
-						action: 'availreport.view.refresh',
-						filter_counters: 1
-					}).done((json) => {
-						if (json.filter_counters) {
-							this.filter.updateCounters(json.filter_counters);
-						}
-					}).always(() => {
-						if (this.refresh_interval > 0) {
-							this.refresh_counters = this.createCountersRefresh(this.refresh_interval);
-						}
-					});
-			},
+		// 		return setTimeout(() => this.getFiltersCounters(), timeout);
+		// 	},
+		// 	getFiltersCounters: function() {
+		// 		return $.post('zabbix.php', {
+		// 				action: 'availreport.view.refresh',
+		// 				filter_counters: 1
+		// 			}).done((json) => {
+		// 				if (json.filter_counters) {
+		// 					this.filter.updateCounters(json.filter_counters);
+		// 				}
+		// 			}).always(() => {
+		// 				if (this.refresh_interval > 0) {
+		// 					this.refresh_counters = this.createCountersRefresh(this.refresh_interval);
+		// 				}
+		// 			});
+		// 	},
 			getCurrentForm: function() {
 				return $('form[name=availreport_view]');
 			},
