@@ -60,20 +60,20 @@
 
 		// 		return setTimeout(() => this.getFiltersCounters(), timeout);
 		// 	},
-		// 	getFiltersCounters: function() {
-		// 		return $.post('zabbix.php', {
-		// 				action: 'availreport.view.refresh',
-		// 				filter_counters: 1
-		// 			}).done((json) => {
-		// 				if (json.filter_counters) {
-		// 					this.filter.updateCounters(json.filter_counters);
-		// 				}
-		// 			}).always(() => {
-		// 				if (this.refresh_interval > 0) {
-		// 					this.refresh_counters = this.createCountersRefresh(this.refresh_interval);
-		// 				}
-		// 			});
-		// 	},
+			getFiltersCounters: function() {
+				return $.post('zabbix.php', {
+						action: 'availreport.view.refresh',
+						filter_counters: 1
+					}).done((json) => {
+						if (json.filter_counters) {
+							this.filter.updateCounters(json.filter_counters);
+						}
+					}).always(() => {
+						if (this.refresh_interval > 0) {
+							this.refresh_counters = this.createCountersRefresh(this.refresh_interval);
+						}
+					});
+			},
 			getCurrentForm: function() {
 				return $('form[name=availreport_view]');
 			},
