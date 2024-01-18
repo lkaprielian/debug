@@ -32,7 +32,7 @@
 					// let url = new Curl('', false);
 
 					// url.setArgument('action', 'availreport.view.refresh');
-					// this.refresh_url = url.getUrl();
+					this.refresh_url = url.getUrl();
 					// this.unscheduleRefresh();
 					this.refresh();
 					
