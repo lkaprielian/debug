@@ -58,13 +58,16 @@ class CControllerBGAvailReportViewRefresh extends CControllerBGAvailReportView {
 		// $filters = $profile->getTabsWithDefaults();
 		// $data['filter_counters'] = [];
 
-		// foreach ($filters as $index => $tabfilter) {
-		// 	if (!$tabfilter['filter_custom_time']) {
-		// 		$tabfilter = [
-		// 			'from' => $profile->from,
-		// 			'to' => $profile->to
-		// 		] + $tabfilter;
-		// 	}
+		foreach ($filter as $tabfilter) {
+			if (!$tabfilter['filter_custom_time']) {
+				$tabfilter = [
+					'from' => 'now-7d',
+					'to' => 'now'
+				] + $tabfilter;
+			}
+		}
+
+		$filter += $tabfilter;
 
 			// 	$data['filter_counters'][$index] = $tabfilter['filter_show_counter'] ? $this->getCount($tabfilter) : 0;
 			// }
