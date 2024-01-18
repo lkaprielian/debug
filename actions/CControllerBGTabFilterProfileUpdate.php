@@ -122,7 +122,12 @@ class CControllerBGTabFilterProfileUpdate extends CController {
 				break;
 
 			case 'expanded':
-				$filter->expanded = ($data['value_int'] > 0);
+				// $filter->expanded = ($data['value_int'] > 0);
+				$dynamictabs = count($filter->tabfilters);
+
+				if ($data['value_int'] >= 0 && $data['value_int'] < $dynamictabs) {
+					$filter->selected = (int) $data['value_int'];
+				}
 
 				break;
 		}
