@@ -29,11 +29,11 @@
 				// this.refresh();
 
 				this.filter.on(TABFILTER_EVENT_URLSET, (ev) => {
-					// let url = new Curl('', false);
+					let url = new Curl('', false);
 
-					// url.setArgument('action', 'availreport.view.refresh');
+					url.setArgument('action', 'web.avail_report.filter.expanded');
 					this.refresh_url = url.getUrl();
-					// this.unscheduleRefresh();
+					this.unscheduleRefresh();
 					this.doRefresh(response);
 					
 					if (this.filter._active_item.hasCounter()) {
