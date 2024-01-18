@@ -15,7 +15,7 @@
 			this.deferred = null;
 
 			if (filter_options) {
-				// this.refresh_counters = this.createCountersRefresh(1);
+				this.refresh_counters = this.createCountersRefresh(1);
 				this.filter = new CTabFilter($('#reports_availreport_filter')[0], filter_options);
 				var filter_item = this.filter._active_item;
 
@@ -29,11 +29,11 @@
 				// this.refresh();
 
 				this.filter.on(TABFILTER_EVENT_URLSET, (ev) => {
-					let url = new Curl('', false);
+					// let url = new Curl('', false);
 
-					url.setArgument('action', 'availreport.view.refresh');
-					this.refresh_url = url.getUrl();
-					this.unscheduleRefresh();
+					// url.setArgument('action', 'availreport.view.refresh');
+					// this.refresh_url = url.getUrl();
+					// this.unscheduleRefresh();
 					this.refresh();
 					
 					// if (this.filter._active_item.hasCounter()) {
@@ -51,29 +51,29 @@
 			}
 		}
 
-		// availreportPage.prototype = {
-		// 	createCountersRefresh: function(timeout) {
-		// 		if (this.refresh_counters) {
-		// 			clearTimeout(this.refresh_counters);
-		// 			this.refresh_counters = null;
-		// 		}
+		availreportPage.prototype = {
+			createCountersRefresh: function(timeout) {
+				if (this.refresh_counters) {
+					clearTimeout(this.refresh_counters);
+					this.refresh_counters = null;
+				}
 
-		// 		return setTimeout(() => this.getFiltersCounters(), timeout);
-		// 	},
-			// getFiltersCounters: function() {
-			// 	return $.post('zabbix.php', {
-			// 			action: 'availreport.view.refresh',
-			// 			filter_counters: 1
-			// 		}).done((json) => {
-			// 			if (json.filter_counters) {
-			// 				this.filter.updateCounters(json.filter_counters);
-			// 			}
-			// 		}).always(() => {
-			// 			if (this.refresh_interval > 0) {
-			// 				this.refresh_counters = this.createCountersRefresh(this.refresh_interval);
-			// 			}
-			// 		});
-			// },
+				return setTimeout(() => this.getFiltersCounters(), timeout);
+			},
+			getFiltersCounters: function() {
+				return $.post('zabbix.php', {
+						action: 'availreport.view.refresh',
+						filter_counters: 1
+					}).done((json) => {
+						if (json.filter_counters) {
+							this.filter.updateCounters(json.filter_counters);
+						}
+					}).always(() => {
+						if (this.refresh_interval > 0) {
+							this.refresh_counters = this.createCountersRefresh(this.refresh_interval);
+						}
+					});
+			},
 			getCurrentForm: function() {
 				return $('form[name=availreport_view]');
 			},
