@@ -19,19 +19,19 @@
 				this.filter = new CTabFilter($('#reports_availreport_filter')[0], filter_options);
 				var filter_item = this.filter._active_item;
 				this.filter.on(TABFILTER_EVENT_URLSET, (ev) => {
-					const url = new URL(this.refresh_url, 'http://example.com');
-					for(var key of url.searchParams.keys()) {
-						if (key == 'from' || key == 'to') {
-							url.searchParams.set(key, data[key]);
-						}
-					}
-					this.refresh_url=url.pathname.slice(1) + '?' + url.searchParams.toString();
-					this.refresh();
+					// const url = new URL(this.refresh_url, 'http://example.com');
+					// for(var key of url.searchParams.keys()) {
+					// 	if (key == 'from' || key == 'to') {
+					// 		url.searchParams.set(key, data[key]);
+					// 	}
+					// }
+					// this.refresh_url=url.pathname.slice(1) + '?' + url.searchParams.toString();
+					// this.refresh();
 					let url = new Curl('', false);
 					url.setArgument('action', 'availreport.view.refresh');
 					this.refresh_url = url.getUrl();
 					this.unscheduleRefresh();
-					this.doRefresh(response);
+					this.refresh();
 					
 					if (this.filter._active_item.hasCounter()) {
 						$.post('zabbix.php', {
@@ -80,6 +80,23 @@
 			removeMessages: function() {
 				$('.wrapper .msg-bad').remove();
 			},
+			onfilter: function() {
+				this.refresh_counters = this.createCountersRefresh(1);
+				this.filter = new CTabFilter($('#reports_availreport_filter')[0], filter_options);
+				var filter_item = this.filter._active_item;
+				this.filter.on(TABFILTER_EVENT_URLSET, (ev) => {
+					if (window.availreport_page) {
+						const url = new URL(window.availreport_page.refresh_url, 'http://example.com');
+						for(var key of url.searchParams.keys()) {
+							if (key == 'from' || key == 'to') {
+								url.searchParams.set(key, data[key]);
+							}
+						}
+
+						window.availreport_page.refresh_url=url.pathname.slice(1) + '?' + url.searchParams.toString();
+						window.availreport_page.refresh();
+					}})
+				}
 			refresh: function() {
 				// Update export_csv url according to what's in filter fields
 				const export_csv_url = new URL(this.refresh_url, 'http://example.com');
