@@ -71,7 +71,7 @@ class CControllerBGAvailReportViewRefresh extends CControllerBGAvailReportView {
 		// }
 
 		$this->getInputs($filters, array_keys($filters));
-		$filter = $this->cleanInput($filters);
+		$filters = $this->cleanInput($filters);
 		$prepared_data = $this->getData($filters);
 
 		$view_url = (new CUrl())
