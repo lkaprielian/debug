@@ -11,39 +11,39 @@ use CRoleHelper;
 
 class CControllerBGAvailReportViewRefresh extends CControllerBGAvailReportView {
 
-	protected function init() {
-		$this->disableCsrfValidation();
-	}
+	// protected function init() {
+	// 	$this->disableCsrfValidation();
+	// }
 
-	protected function checkInput() {
-		$fields = [
-			'name' =>			'string',
-			'mode' =>			'in '.AVAILABILITY_REPORT_BY_HOST.','.AVAILABILITY_REPORT_BY_TEMPLATE,
-			'tpl_groupids' =>		'array_id',
-			'templateids' =>		'array_id',
-			'tpl_triggerids' =>		'array_id',
-			'hostgroupids' =>		'array_id',
-			'hostids' =>			'array_id',
-			'filter_reset' =>		'in 1',
-			'only_with_problems' =>		'in 0,1',
-			'page' =>			'ge 1',
-			'counter_index' =>		'ge 0',
-			'from' =>			'range_time',
-			'to' =>				'range_time',
-			'filter_counters' =>		'in 1'
-		];
-		$ret = $this->validateInput($fields) && $this->validateTimeSelectorPeriod();
+	// protected function checkInput() {
+	// 	$fields = [
+	// 		'name' =>			'string',
+	// 		'mode' =>			'in '.AVAILABILITY_REPORT_BY_HOST.','.AVAILABILITY_REPORT_BY_TEMPLATE,
+	// 		'tpl_groupids' =>		'array_id',
+	// 		'templateids' =>		'array_id',
+	// 		'tpl_triggerids' =>		'array_id',
+	// 		'hostgroupids' =>		'array_id',
+	// 		'hostids' =>			'array_id',
+	// 		'filter_reset' =>		'in 1',
+	// 		'only_with_problems' =>		'in 0,1',
+	// 		'page' =>			'ge 1',
+	// 		'counter_index' =>		'ge 0',
+	// 		'from' =>			'range_time',
+	// 		'to' =>				'range_time',
+	// 		'filter_counters' =>		'in 1'
+	// 	];
+	// 	$ret = $this->validateInput($fields) && $this->validateTimeSelectorPeriod();
 
-		if (!$ret) {
-			$this->setResponse(new CControllerResponseFatal());
-		}
+	// 	if (!$ret) {
+	// 		$this->setResponse(new CControllerResponseFatal());
+	// 	}
 
-		return $ret;
-	}
+	// 	return $ret;
+	// }
 
-	protected function checkPermissions() {
-		return $this->checkAccess(CRoleHelper::UI_REPORTS_AVAILABILITY_REPORT);
-	}
+	// protected function checkPermissions() {
+	// 	return $this->checkAccess(CRoleHelper::UI_REPORTS_AVAILABILITY_REPORT);
+	// }
 
 	protected function doAction(): void {
 
@@ -58,16 +58,16 @@ class CControllerBGAvailReportViewRefresh extends CControllerBGAvailReportView {
 		// $filters = $profile->getTabsWithDefaults();
 		// $data['filter_counters'] = [];
 
-		foreach ($filter as $tabfilter) {
-			if (!$tabfilter['filter_custom_time']) {
-				$tabfilter = [
-					'from' => 'now-7d',
-					'to' => 'now'
-				] + $tabfilter;
-			}
-		}
+		// foreach ($filter as $tabfilter) {
+		// 	if (!$tabfilter['filter_custom_time']) {
+		// 		$tabfilter = [
+		// 			'from' => 'now-7d',
+		// 			'to' => 'now'
+		// 		] + $tabfilter;
+		// 	}
+		// }
 
-		$filter += $tabfilter;
+		// $filter += $tabfilter;
 
 			// 	$data['filter_counters'][$index] = $tabfilter['filter_show_counter'] ? $this->getCount($tabfilter) : 0;
 			// }
