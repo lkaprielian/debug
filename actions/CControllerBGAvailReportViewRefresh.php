@@ -72,13 +72,13 @@ class CControllerBGAvailReportViewRefresh extends CControllerBGAvailReportView {
 		// $filter = $this->cleanInput($filter);
 		$prepared_data = $this->getData($filters);
 
-		// $view_url = (new CUrl())
-		// 	->setArgument('action', 'availreport.view')
-		// 	->removeArgument('page');
+		$view_url = (new CUrl())
+			->setArgument('action', 'availreport.view')
+			->removeArgument('page');
 
 		$data = [
 			'filter' => $filters,
-			// 'view_curl' => $view_url
+			'view_curl' => $view_url
 		] + $prepared_data;
 
 		$response = new CControllerResponseData($data);
