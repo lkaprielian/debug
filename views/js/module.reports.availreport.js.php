@@ -31,7 +31,7 @@
 				this.filter.on(TABFILTER_EVENT_URLSET, (ev) => {
 					let url = new Curl('', false);
 
-					url.setArgument('action', 'web.avail_report.filter.expanded');
+					url.setArgument('action', 'tabfilter.profile.update');
 					this.refresh_url = url.getUrl();
 					this.unscheduleRefresh();
 					this.doRefresh(response);
