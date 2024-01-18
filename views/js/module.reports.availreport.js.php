@@ -17,26 +17,26 @@
 			if (filter_options) {
 				this.refresh_counters = this.createCountersRefresh(1);
 				this.filter = new CTabFilter($('#reports_availreport_filter')[0], filter_options);
+				var filter_item = this.filter._active_item;
+				if (window.availreport_page) {
+				const url = new URL(window.availreport_page.refresh_url, 'http://example.com');
+				for(var key of url.searchParams.keys()) {
+					if (key == 'from' || key == 'to') {
+						url.searchParams.set(key, data[key]);
+					}
+				}
+
+				window.availreport_page.refresh_url=url.pathname.slice(1) + '?' + url.searchParams.toString();
+				window.availreport_page.refresh();
+				}
 				this.filter.on(TABFILTER_EVENT_URLSET, (ev) => {
-					// let url = new Curl('', false);
+					let url = new Curl('', false);
 
-					// url.setArgument('action', 'availreport.view.refresh');
-					// this.refresh_url = url.getUrl();
-					// this.unscheduleRefresh();
-					// this.refresh();
-
-					var filter_item = this.filter._active_item;
-					if (window.availreport_page) {
-					const url = new URL(window.availreport_page.refresh_url, 'http://example.com');
-					for(var key of url.searchParams.keys()) {
-						if (key == 'from' || key == 'to') {
-							url.searchParams.set(key, data[key]);
-						}
-					}
-
-					window.availreport_page.refresh_url=url.pathname.slice(1) + '?' + url.searchParams.toString();
-					window.availreport_page.refresh();
-					}
+					url.setArgument('action', 'availreport.view.refresh');
+					this.refresh_url = url.getUrl();
+					this.unscheduleRefresh();
+					this.refresh();
+					
 					if (this.filter._active_item.hasCounter()) {
 						$.post('zabbix.php', {
 							action: 'availreport.view.refresh',
