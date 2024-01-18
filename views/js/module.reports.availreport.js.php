@@ -29,7 +29,7 @@
 				// this.refresh();
 
 				this.filter.on(TABFILTER_EVENT_URLSET, (ev) => {
-					let url = new Curl('zabbix.php', false);
+					let url = new Curl('', false);
 
 					url.setArgument('action', 'availreport.view.refresh');
 					this.refresh_url = url.getUrl();
