@@ -34,7 +34,7 @@
 					// url.setArgument('action', 'availreport.view.refresh');
 					this.refresh_url = url.getUrl();
 					// this.unscheduleRefresh();
-					this.refresh();
+					this.doRefresh(response);
 					
 					if (this.filter._active_item.hasCounter()) {
 						$.post('zabbix.php', {
