@@ -47,20 +47,20 @@ class CControllerBGAvailReportViewRefresh extends CControllerBGAvailReportView {
 
 	protected function doAction(): void {
 
-		// $filter = static::FILTER_FIELDS_DEFAULT;
-		$filter = [
-			'name' => '',
-			'mode' => AVAILABILITY_REPORT_BY_TEMPLATE,
-			'tpl_groupids' => [],
-			'templateids' => [],
-			'tpl_triggerids' => [], 
-			'hostgroupids' => [],
-			'hostids' => [],
-			'only_with_problems' => 1,
-			'page' => null,
-			'from' => 'now-7d',
-			'to' => 'now'
-		];
+		$filter = static::FILTER_FIELDS_DEFAULT;
+		// $filter = [
+		// 	'name' => '',
+		// 	'mode' => AVAILABILITY_REPORT_BY_TEMPLATE,
+		// 	'tpl_groupids' => [],
+		// 	'templateids' => [],
+		// 	'tpl_triggerids' => [], 
+		// 	'hostgroupids' => [],
+		// 	'hostids' => [],
+		// 	'only_with_problems' => 1,
+		// 	'page' => null,
+		// 	'from' => 'now-7d',
+		// 	'to' => 'now'
+		// ];
 
 		// if ($this->getInput('filter_counters', 0)) {
 		// $profile = (new CTabFilterProfile(static::FILTER_IDX, static::FILTER_FIELDS_DEFAULT))->read();
@@ -87,7 +87,7 @@ class CControllerBGAvailReportViewRefresh extends CControllerBGAvailReportView {
 		// }
 
 		$this->getInputs($filter, array_keys($filter));
-		// $filter = $this->cleanInput($filter);
+		$filter = $this->cleanInput($filter);
 		$prepared_data = $this->getData($filter);
 
 		$view_url = (new CUrl())
