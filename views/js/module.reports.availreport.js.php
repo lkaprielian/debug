@@ -51,17 +51,17 @@
 					this.refresh();
 					var filter_item = this.filter._active_item;
 
-					if (this.filter._active_item.hasCounter()) {
-						$.post('zabbix.php', {
-							action: 'availreport.view.refresh',
-							filter_counters: 1,
-							counter_index: filter_item._index
-						}).done((json) => {
-							if (json.filter_counters) {
-								filter_item.updateCounter(json.filter_counters.pop());
-							}
-						});
-					}
+					// if (this.filter._active_item.hasCounter()) {
+					// 	$.post('zabbix.php', {
+					// 		action: 'availreport.view.refresh',
+					// 		filter_counters: 1,
+					// 		counter_index: filter_item._index
+					// 	}).done((json) => {
+					// 		if (json.filter_counters) {
+					// 			filter_item.updateCounter(json.filter_counters.pop());
+					// 		}
+					// 	});
+					// }
 				});
 			}
 		}
