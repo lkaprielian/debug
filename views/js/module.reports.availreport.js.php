@@ -38,7 +38,7 @@
 					// this.refresh();
 					// // }
 					let url = new Curl('', false);
-					url.setArgument('action', 'availreport.view.refresh');
+					url.setArgument('action', 'availreport.view');
 					this.refresh_url = url.getUrl();
 					for(var key of this.refresh_url.searchParams.keys()) {
 						if (key == 'from' || key == 'to') {
