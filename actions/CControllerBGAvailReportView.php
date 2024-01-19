@@ -28,6 +28,8 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 			'only_with_problems' =>		'in 0,1',
 			'page' =>			'ge 1',
 			'counter_index' =>		'ge 0',
+			'sort' =>					'in clock,host,severity,name',
+			'sortorder' =>				'in '.ZBX_SORT_DOWN.','.ZBX_SORT_UP,
 			'from' =>			'range_time',
 			'to' =>				'range_time',
 			'filter_name' =>			'string',
