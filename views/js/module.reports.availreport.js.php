@@ -25,8 +25,8 @@
 					// 		url.searchParams.set(key, data[key]);
 					// 	}
 					// }
-					this.refresh_url=url.pathname.slice(1) + '?' + url.searchParams.toString();
-					this.refresh();
+					// this.refresh_url=url.pathname.slice(1) + '?' + url.searchParams.toString();
+					// this.refresh();
 					let url = new URL(this.refresh_url, 'http://example.com');
 					for(var key of url.searchParams.keys()) {
 						if (key == 'from' || key == 'to') {
