@@ -29,7 +29,13 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 			'page' =>			'ge 1',
 			'counter_index' =>		'ge 0',
 			'from' =>			'range_time',
-			'to' =>				'range_time'
+			'to' =>				'range_time',
+			'filter_name' =>			'string',
+			'filter_custom_time' =>		'in 1,0',
+			'filter_show_counter' =>	'in 1,0',
+			'filter_counters' =>		'in 1',
+			'filter_set' =>				'in 1'
+
 		];
 		$ret = $this->validateInput($fields) && $this->validateTimeSelectorPeriod();
 
@@ -51,6 +57,10 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 		if ($this->hasInput('filter_reset')) {
 			$profile->reset();
 		}
+		elseif ($this->hasInput('filter_set')) {
+			$profile->setTabFilter(0, ['filter_name' => ''] + $this->cleanInput($this->getInputAll()));
+			$profile->update();
+		}
 		else {
 			$profile->setInput($this->cleanInput($this->getInputAll()));
 		}
@@ -70,7 +80,8 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 		$filter['action'] = 'availreport.view.refresh';
 		$filter['action_from_url'] = $this->getAction();
 		array_map([$refresh_curl, 'setArgument'], array_keys($filter), $filter);
-
+		$timeselector_from = $filter['filter_custom_time'] == 0 ? $filter['from'] : $profile->from;
+		$timeselector_to = $filter['filter_custom_time'] == 0 ? $filter['to'] : $profile->to;
 		$data = [
 			'action' => $this->getAction(),
 			'tabfilter_idx' => static::FILTER_IDX,
@@ -84,10 +95,10 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 				'expanded' => $profile->expanded,
 				'page' => $filter['page'],
 				'timeselector' => [
-					'from' => $profile->from,
-					'to' => $profile->to,
+					'from' => $timeselector_from,
+					'to' => $timeselector_to,
 					'disabled' => false
-				] + getTimeselectorActions($profile->from, $profile->to)
+				] + getTimeselectorActions($timeselector_from, $timeselector_to)
 			],
 			'filter_tabs' => $filter_tabs,
 			'refresh_url' => $refresh_curl->getUrl(),
