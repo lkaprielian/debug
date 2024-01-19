@@ -27,33 +27,40 @@
 					// }
 					// this.refresh_url=url.pathname.slice(1) + '?' + url.searchParams.toString();
 					// this.refresh();
-					let url = new URL(this.refresh_url, 'http://example.com');
-					for(var key of url.searchParams.keys()) {
+					// let url = new URL(this.refresh_url, 'http://example.com');
+					// for(var key of url.searchParams.keys()) {
+					// 	if (key == 'from' || key == 'to') {
+					// 		url.searchParams.set(key, data[key]);
+					// 	}
+					// }
+
+					// this.refresh_url=url.pathname.slice(1) + '?' + url.searchParams.toString();
+					// this.refresh();
+					// // }
+					let url = new Curl('', false);
+					url.setArgument('action', 'availreport.view.refresh');
+					this.refresh_url = url.getUrl();
+					for(var key of this.refresh_url.searchParams.keys()) {
 						if (key == 'from' || key == 'to') {
-							url.searchParams.set(key, data[key]);
+							this.refresh_url.searchParams.set(key, data[key]);
 						}
 					}
 
-					this.refresh_url=url.pathname.slice(1) + '?' + url.searchParams.toString();
+					this.refresh_url=this.refresh_url.pathname.slice(1) + '?' + this.refresh_url.searchParams.toString();
+					this.unscheduleRefresh();
 					this.refresh();
-					// }
-					// let url = new Curl('', false);
-					// url.setArgument('action', 'availreport.view.refresh');
-					// this.refresh_url = url.getUrl();
-					// this.unscheduleRefresh();
-					// this.refresh();
 					
-					// if (this.filter._active_item.hasCounter()) {
-					// 	$.post('zabbix.php', {
-					// 		action: 'availreport.view.refresh',
-					// 		filter_counters: 1,
-					// 		counter_index: filter_item._index
-					// 	}).done((json) => {
-					// 		if (json.filter_counters) {
-					// 			filter_item.updateCounter(json.filter_counters.pop());
-					// 		}
-					// 	});
-					// }
+					if (this.filter._active_item.hasCounter()) {
+						$.post('zabbix.php', {
+							action: 'availreport.view.refresh',
+							filter_counters: 1,
+							counter_index: filter_item._index
+						}).done((json) => {
+							if (json.filter_counters) {
+								filter_item.updateCounter(json.filter_counters.pop());
+							}
+						});
+					}
 				});
 			}
 		}
