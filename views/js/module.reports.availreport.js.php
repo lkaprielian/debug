@@ -46,7 +46,7 @@
 					// 	}
 					// }
 
-					// this.refresh_url=this.refresh_url.pathname.slice(1) + '?' + this.refresh_url.searchParams.toString();
+					this.refresh_url=this.refresh_url.pathname.slice(1) + '?' + this.refresh_url.searchParams.toString();
 					this.unscheduleRefresh();
 					this.refresh();
 					var filter_item = this.filter._active_item;
