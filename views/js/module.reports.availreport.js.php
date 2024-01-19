@@ -38,7 +38,7 @@
 					// this.refresh();
 					// // }
 					let url = new Curl('', false);
-					url.setArgument('action', 'availreport.view');
+					url.setArgument('action', 'availreport.view.refresh');
 					this.refresh_url = url.getUrl();
 					// for(var key of this.refresh_url.searchParams.keys()) {
 					// 	if (key == 'from' || key == 'to') {
@@ -47,9 +47,10 @@
 					// }
 
 					// this.refresh_url=this.refresh_url.pathname.slice(1) + '?' + this.refresh_url.searchParams.toString();
-					// this.unscheduleRefresh();
-					// this.refresh();
-					
+					this.unscheduleRefresh();
+					this.refresh();
+					var filter_item = this.filter._active_item;
+
 					if (this.filter._active_item.hasCounter()) {
 						$.post('zabbix.php', {
 							action: 'availreport.view.refresh',
