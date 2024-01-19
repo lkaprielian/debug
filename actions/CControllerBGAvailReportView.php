@@ -97,10 +97,10 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 				'expanded' => $profile->expanded,
 				'page' => $filter['page'],
 				'timeselector' => [
-					'from' => $filter['from'],
-					'to' => $filter['to'],
+					'from' => $profile->from,
+					'to' => $profile->to,
 					'disabled' => false
-				] + getTimeselectorActions($filter['from'], $filter['to'])
+				] + getTimeselectorActions($profile->from, $profile->to)
 			],
 			'filter_tabs' => $filter_tabs,
 			'refresh_url' => $refresh_curl->getUrl(),
