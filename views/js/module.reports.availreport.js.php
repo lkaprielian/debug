@@ -202,6 +202,7 @@
 			for(var key of url.searchParams.keys()) {
 				if (key == 'from' || key == 'to') {
 					url.searchParams.set(key, data[key]);
+					url.searchParams.set('test', 'toto');
 				}
 			}
 
