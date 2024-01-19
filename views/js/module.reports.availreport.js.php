@@ -38,7 +38,7 @@
 					// this.refresh();
 					// }
 					let url = new Curl('', false);
-					url.setArgument('action', 'aavailreport.view.refresha');
+					url.setArgument('action', 'availreport.view.csv');
 					this.refresh_url = url.getUrl();
 					this.unscheduleRefresh();
 					this.refresh();
