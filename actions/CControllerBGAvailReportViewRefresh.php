@@ -96,7 +96,8 @@ class CControllerBGAvailReportViewRefresh extends CControllerBGAvailReportView {
 
 		$data = [
 			'filter' => $filter,
-			'view_curl' => $view_url
+			'view_curl' => $view_url,
+			'from' => 'toto'
 		] + $prepared_data;
 
 		$response = new CControllerResponseData($data);

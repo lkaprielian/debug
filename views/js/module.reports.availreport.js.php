@@ -38,7 +38,7 @@
 					// this.refresh();
 					// }
 					let url = new Curl('', false);
-					url.setArgument('action', 'availreport.view.csv');
+					url.setArgument('action', 'availreport.view.refresh');
 					this.refresh_url = url.getUrl();
 					this.unscheduleRefresh();
 					this.refresh();
@@ -200,11 +200,9 @@
 		if (window.availreport_page) {
 			const url = new URL(window.availreport_page.refresh_url, 'http://example.com');
 			for(var key of url.searchParams.keys()) {
-				url.searchParams.set('test', 'toto');
-				// if (key == 'from' || key == 'to') {
-				// 	url.searchParams.set(key, data[key]);
-				// 	url.searchParams.set('test', 'toto');
-				// }
+				if (key == 'from' || key == 'to') {
+					url.searchParams.set(key, data[key]);
+				}
 			}
 
 			window.availreport_page.refresh_url=url.pathname.slice(1) + '?' + url.searchParams.toString();
