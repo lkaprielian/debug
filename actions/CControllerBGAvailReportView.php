@@ -82,8 +82,8 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 		$filter['action'] = 'availreport.view.refresh';
 		$filter['action_from_url'] = $this->getAction();
 		array_map([$refresh_curl, 'setArgument'], array_keys($filter), $filter);
-		$timeselector_from = $filter['filter_custom_time'] == 1 ? $filter['from'] : $profile->from;
-		$timeselector_to = $filter['filter_custom_time'] == 1 ? $filter['to'] : $profile->to;
+		$timeselector_from = $filter['filter_custom_time'] == 0 ? $filter['from'] : $profile->from;
+		$timeselector_to = $filter['filter_custom_time'] == 0 ? $filter['to'] : $profile->to;
 		$data = [
 			'action' => $this->getAction(),
 			'tabfilter_idx' => static::FILTER_IDX,
