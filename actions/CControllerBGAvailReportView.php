@@ -59,10 +59,10 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 		if ($this->hasInput('filter_reset')) {
 			$profile->reset();
 		}
-		elseif ($this->hasInput('filter_set')) {
-			$profile->setTabFilter(0, ['filter_name' => ''] + $this->cleanInput($this->getInputAll()));
-			$profile->update();
-		}
+		// elseif ($this->hasInput('filter_set')) {
+		// 	$profile->setTabFilter(0, ['filter_name' => ''] + $this->cleanInput($this->getInputAll()));
+		// 	$profile->update();
+		// }
 		else {
 			$profile->setInput($this->cleanInput($this->getInputAll()));
 		}
