@@ -22,7 +22,8 @@ abstract class CControllerBGAvailReport extends CController {
 		'mode' => AVAILABILITY_REPORT_BY_TEMPLATE,
 		'tpl_groupids' => [],
 		'templateids' => [],
-		'tpl_triggerids' => [], 
+		'tpl_triggerids' => [],
+		'triggerids' => [],
 		'hostgroupids' => [],
 		'hostids' => [],
 		'only_with_problems' => 1,
@@ -288,6 +289,29 @@ abstract class CControllerBGAvailReport extends CController {
 			$data['tpl_triggers_multiselect'] = CArrayHelper::renameObjectsKeys(array_values($triggers), ['triggerid' => 'id']);
 		}
 
+		// Triggers multiselect.
+		if ($filter['triggerids']) {
+			$triggers = CArrayHelper::renameObjectsKeys(API::Trigger()->get([
+				'output' => ['triggerid', 'description'],
+				'selectHosts' => ['name'],
+				'expandDescription' => true,
+				'triggerids' => $filter['triggerids'],
+				'monitored' => true
+			]), ['triggerid' => 'id', 'description' => 'name']);
+
+			CArrayHelper::sort($triggers, [
+				['field' => 'name', 'order' => ZBX_SORT_UP]
+			]);
+
+			foreach ($triggers as &$trigger) {
+				$trigger['prefix'] = $trigger['hosts'][0]['name'].NAME_DELIMITER;
+				unset($trigger['hosts']);
+			}
+			unset($trigger);
+
+			$data['triggers'] = $triggers;
+		}
+	
 		if ($filter['hostgroupids']) {
 			$hostgroups = API::HostGroup()->get([
 				'output' => ['groupid', 'name'],
