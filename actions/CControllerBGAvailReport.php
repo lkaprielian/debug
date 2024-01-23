@@ -50,6 +50,7 @@ abstract class CControllerBGAvailReport extends CController {
 		$num_of_triggers = API::Trigger()->get([
 			'output' => ['triggerid', 'description', 'expression', 'value'],
 			'monitored' => true,
+			'triggerids' => sizeof($filter['triggerids']) > 0 ? $filter['triggerids'] : null,
 			'groupids' => $host_group_ids,
 			'hostids ' => sizeof($filter['hostids']) > 0 ? $filter['hostids'] : null,
 			'filter' => [
@@ -70,6 +71,7 @@ abstract class CControllerBGAvailReport extends CController {
 			'expandDescription' => true,
 			'monitored' => true,
 			'groupids' => $host_group_ids,
+			'triggerids' => sizeof($filter['triggerids']) > 0 ? $filter['triggerids'] : null,
 			'hostids' => sizeof($filter['hostids']) > 0 ? $filter['hostids'] : null,
 			'filter' => [
 				'templateid' => sizeof($filter['tpl_triggerids']) > 0 ? $filter['tpl_triggerids'] : null
