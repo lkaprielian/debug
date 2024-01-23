@@ -22,6 +22,7 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 			'tpl_groupids' =>		'array_id',
 			'templateids' =>		'array_id',
 			'tpl_triggerids' =>		'array_id',
+			'triggerids' =>			'array_id',
 			'hostgroupids' =>		'array_id',
 			'hostids' =>			'array_id',
 			'filter_reset' =>		'in 1',
