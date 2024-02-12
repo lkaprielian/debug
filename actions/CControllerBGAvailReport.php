@@ -15,7 +15,6 @@ abstract class CControllerBGAvailReport extends CController {
 
 	// Filter idx prefix.
 	const FILTER_IDX = 'web.avail_report.filter';
-
 	// Filter fields default values.
 	const FILTER_FIELDS_DEFAULT = [
 		'name' => '',
@@ -29,7 +28,9 @@ abstract class CControllerBGAvailReport extends CController {
 		'only_with_problems' => 1,
         'page' => null,
 		'from' => '',
-		'to' => ''
+		'to' => '',
+		'sort' => 'name',
+		'sortorder' => ZBX_SORT_DOWN
 	];
 
 	protected function getData(array $filter): array {
@@ -39,13 +40,13 @@ abstract class CControllerBGAvailReport extends CController {
 		if (!array_key_exists('action_from_url', $filter) ||
 			$filter['action_from_url'] != 'availreport.view.csv') {
 			// Generating for UI
-			$limit = CSettingsHelper::get(CSettingsHelper::SEARCH_LIMIT) + 1;
+			// $limit = CSettingsHelper::get(CSettingsHelper::SEARCH_LIMIT) + 1;
+			$limit = CSettingsHelper::get(CSettingsHelper::SEARCH_LIMIT) + 130000;
 			$generating_csv_flag = 0;
 		} else {
 			// Generating for CSV report
 			$limit = 5001;
 		}
-
 		// All CONFIGURED triggers that fall under selected filter
 		$num_of_triggers = API::Trigger()->get([
 			'output' => ['triggerid', 'description', 'expression', 'value'],
@@ -63,22 +64,6 @@ abstract class CControllerBGAvailReport extends CController {
 			$warning = 'WARNING: ' . $num_of_triggers . ' triggers found which is more than reasonable limit ' . $limit . ', results below might be not totally accurate. Please add or review current filter conditions.';
 		}
 
-		$triggers = API::Trigger()->get([
-			'output' => ['triggerid', 'description', 'expression', 'value'],
-			'selectHosts' => ['name'],
-			'selectTags' => 'extend',
-			'selectFunctions' => 'extend',
-			'expandDescription' => true,
-			'monitored' => true,
-			'groupids' => $host_group_ids,
-			'triggerids' => sizeof($filter['triggerids']) > 0 ? $filter['triggerids'] : null,
-			'hostids' => sizeof($filter['hostids']) > 0 ? $filter['hostids'] : null,
-			'filter' => [
-				'templateid' => sizeof($filter['tpl_triggerids']) > 0 ? $filter['tpl_triggerids'] : null
-			],
-                        'limit' => $limit
-        ]);
-
 		// Get timestamps from and to
 		if ($filter['from'] != '' && $filter['to'] != '') {
 			$range_time_parser = new CRangeTimeParser();
@@ -91,88 +76,64 @@ abstract class CControllerBGAvailReport extends CController {
 			$filter['to_ts'] = null;
 		}
 
-		if ($filter['only_with_problems']) {
-			// Find all triggers that went into PROBLEM state
-			// at any time in given time frame
-			$triggerids_with_problems = [];
-			$sql = 'SELECT e.eventid, e.objectid' .
-				' FROM events e'.
-				' WHERE e.source='.EVENT_SOURCE_TRIGGERS.
-					' AND e.object='.EVENT_OBJECT_TRIGGER.
-					' AND e.value='.TRIGGER_VALUE_TRUE;
-			if ($filter['from_ts']) {
-				$sql .= ' AND e.clock>='.zbx_dbstr($filter['from_ts']);
-			}
-			if ($filter['to_ts']) {
-				$sql .= ' AND e.clock<='.zbx_dbstr($filter['to_ts']);
-			}
-			$dbEvents = DBselect($sql);
-			while ($row = DBfetch($dbEvents)) {
-				if (!array_key_exists($row['objectid'], $triggerids_with_problems)) {
-					$triggerids_with_problems[$row['objectid']] = [];
-				}
-				if (!array_key_exists('tags', $triggerids_with_problems[$row['objectid']])) {
-					$triggerids_with_problems[$row['objectid']] = ['tags' => []];
-				}
-				$sql1 = 'SELECT et.tag, et.value' .
-					' FROM event_tag et' .
-					' WHERE et.eventid=' . $row['eventid'];
-				$dbTags = DBselect($sql1);
-				while ($row1 = DBfetch($dbTags)) {
-					$triggerids_with_problems[$row['objectid']]['tags'][] = [
-						'tag' => $row1['tag'],
-						'value' => $row1['value']
-					];
-				}
-			}
-			// Find all triggers that were in the PROBLEM state
-			// at the start of this time frame
-			foreach($triggers as $trigger) {
-				$sql = 'SELECT e.eventid, e.objectid, e.value'.
-						' FROM events e'.
-						' WHERE e.objectid='.zbx_dbstr($trigger['triggerid']).
-							' AND e.source='.EVENT_SOURCE_TRIGGERS.
-							' AND e.object='.EVENT_OBJECT_TRIGGER.
-							' AND e.clock<'.zbx_dbstr($filter['from_ts']).
-						' ORDER BY e.eventid DESC';
-				if ($row = DBfetch(DBselect($sql, 1))) {
-					// Add the triggerid to the array if it is not there
-					if ($row['value'] == TRIGGER_VALUE_TRUE &&
-						!in_array($row['objectid'], $triggerids_with_problems)) {
-						$triggerids_with_problems[$row['objectid']] = ['tags' => []];
-						$sql1 = 'SELECT et.tag, et.value' .
-							' FROM event_tag et' .
-							' WHERE et.eventid=' . $row['eventid'];
-						$dbTags = DBselect($sql1);
-						while ($row1 = DBfetch($dbTags)) {
-							$triggerids_with_problems[$row['objectid']]['tags'][] = [
-								'tag' => $row1['tag'],
-								'value' => $row1['value']
-							];
-						}
-					}
-				}
-			}
-			$triggers_with_problems = [];
-			foreach ($triggers as $trigger) {
-				if (array_key_exists($trigger['triggerid'], $triggerids_with_problems)) {
-					$trigger['tags'] = $triggerids_with_problems[$trigger['triggerid']]['tags'];
-					$triggers_with_problems[] = $trigger;
-				}
-			}
 
-                        // Reset all previously selected triggers to only ones with problems
-                        unset($triggers);
-			$triggers = $triggers_with_problems;
+		// get 100 triggerids with max event count
+		$triggersEventCount = [];
+		$sql = 'SELECT e.objectid,count(distinct e.eventid) AS cnt_event'.
+				' FROM triggers t,events e'.
+				' WHERE t.triggerid=e.objectid'.
+					' AND e.source='.EVENT_SOURCE_TRIGGERS.
+					' AND e.value='.TRIGGER_VALUE_TRUE.
+					' AND e.clock>='.zbx_dbstr($filter['from_ts']).
+					' AND e.clock<='.zbx_dbstr($filter['to_ts']);
+		
+		$sql .= ' AND '.dbConditionInt('t.flags', [ZBX_FLAG_DISCOVERY_NORMAL, ZBX_FLAG_DISCOVERY_CREATED]).
+				' GROUP BY e.objectid'.
+				' ORDER BY cnt_event DESC';
+		$result = DBselect($sql, 100);
+		while ($row = DBfetch($result)) {
+			$triggersEventCount[$row['objectid']] = $row['cnt_event'];
 		}
 
-		// Now just prepare needed data.
-		CArrayHelper::sort($triggers, ['host_name', 'description'], 'ASC');
+		// retrieve only triggerid which is in the filter and exist in triggereventcount(filter + sql result) use it in trigger api call
+		$matched_triggerids = array_intersect(array_keys($triggersEventCount), $filter['triggerids']);
+
+
+		$triggers = API::Trigger()->get([
+			'output' => ['triggerid', 'description', 'expression', 'value', 'priority', 'lastchange'],
+			'selectHosts' => ['hostid', 'status', 'name'],
+			'triggerids' => sizeof($filter['triggerids']) > 0 ? $matched_triggerids : array_keys($triggersEventCount), //added to get top 100 
+			'selectTags' => 'extend',
+			'selectFunctions' => 'extend',
+			'expandDescription' => true,
+			'monitored' => true,
+			'groupids' => $host_group_ids,
+			'preservekeys' => true,
+			'hostids' => sizeof($filter['hostids']) > 0 ? $filter['hostids'] : null,
+			'filter' => [
+				'templateid' => sizeof($filter['tpl_triggerids']) > 0 ? $filter['tpl_triggerids'] : null,
+			],
+            'limit' => $limit
+        ]);
+
+		## added for cnt and hostid
+		foreach ($triggers as $triggerId => $trigger) {
+			$triggers[$triggerId]['cnt_event'] = $triggersEventCount[$triggerId];
+		}
+
+		// Now just prepare needed data. Modified to take 2 ways of sorts
+		$filter['sortorder'] == 'ASC' ? CArrayHelper::sort($triggers, [
+			['field' => 'cnt_event', 'order' => ZBX_SORT_UP],
+			'host', 'description', 'priority'
+		]): CArrayHelper::sort($triggers, [
+			['field' => 'cnt_event', 'order' => ZBX_SORT_DOWN],
+			'host', 'description', 'priority'
+		]);
 
 		$view_curl = (new CUrl())->setArgument('action', 'availreport.view');
 
 		$rows_per_page = (int) CWebUser::$data['rows_per_page'];
-                $selected_triggers = [];
+        $selected_triggers = [];
 		$i = 0;  // Counter. We need to stop doing expensive calculateAvailability() when results are not visible
 		$page = $filter['page'] ? $filter['page'] - 1 : 0;
 		$start_idx = $page * $rows_per_page;
@@ -181,14 +142,16 @@ abstract class CControllerBGAvailReport extends CController {
 			if ($generating_csv_flag ||
 				 ($i >= $start_idx && $i < $end_idx) ) {
 				$trigger['availability'] = calculateAvailability($trigger['triggerid'], $filter['from_ts'], $filter['to_ts']);
-				if ($filter['only_with_problems']) {
-					if ($trigger['availability']['true'] > 0.00005) {
-						$selected_triggers[] = $trigger;
-					}
-				} else {
+				// if ($filter['only_with_problems']) {
+				if ($trigger['availability']['true'] > 0.00005) {
 					$selected_triggers[] = $trigger;
 				}
-			} else {
+				// } 
+				else {
+					$selected_triggers[] = $trigger;
+				}
+			} 
+			else {
 				$selected_triggers[] = $trigger;
 			}
 			$i++;
@@ -204,41 +167,6 @@ abstract class CControllerBGAvailReport extends CController {
 			$trigger['host_name'] = $trigger['hosts'][0]['name'];
 		}
 		unset($trigger);
-
-		if (!$filter['only_with_problems']) {
-			foreach($selected_triggers as &$trigger) {
-				// Add host tags
-				$hosts = API::Host()->get([
-					'output' => ['hostid'],
-					'selectTags' => 'extend',
-					'hostids' => [$trigger['hosts'][0]['hostid']]
-				]);
-				if (count($hosts[0]['tags']) > 0) {
-					$trigger['tags'][] = $hosts[0]['tags'];
-				}
-
-				// Add item(s) tags
-				foreach($trigger['functions'] as $function) {
-					$sql = 'SELECT it.tag, it.value' .
-						' FROM item_tag it' .
-						' WHERE it.itemid=' . $function['itemid'];
-					$dbTags = DBselect($sql);
-					while ($row = DBfetch($dbTags)) {
-						$new_tag = [
-							'tag' => $row['tag'],
-							'value' => $row['value']
-						];
-						if (!in_array($new_tag, $trigger['tags'])) {
-							$trigger['tags'][] = [
-								'tag' => $row['tag'],
-								'value' => $row['value']
-							];
-						}
-					}
-				}
-			}
-			unset($trigger);
-		}
 
 		return [
 			'paging' => $paging,
@@ -313,7 +241,7 @@ abstract class CControllerBGAvailReport extends CController {
 
 			$data['triggers'] = $triggers;
 		}
-	
+
 		if ($filter['hostgroupids']) {
 			$hostgroups = API::HostGroup()->get([
 				'output' => ['groupid', 'name'],
