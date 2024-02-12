@@ -77,7 +77,7 @@ abstract class CControllerBGAvailReport extends CController {
 				'templateid' => sizeof($filter['tpl_triggerids']) > 0 ? $filter['tpl_triggerids'] : null
 			],
                         'limit' => $limit
-                ]);
+        ]);
 
 		// Get timestamps from and to
 		if ($filter['from'] != '' && $filter['to'] != '') {

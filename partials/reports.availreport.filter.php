@@ -1,63 +1,63 @@
 <?php declare(strict_types = 1);
 
 $filter_column = (new CFormList())
-	->addRow((new CLabel(_('Template groups'), 'tpl_groupids_#{uniqid}_ms')),
-		(new CMultiSelect([
-			'name' => 'tpl_groupids[]',
-			'object_name' => 'hostGroup',
-			'data' => array_key_exists('tpl_groups_multiselect', $data) ? $data['tpl_groups_multiselect'] : [],
-			'popup' => [
-				'parameters' => [
-					'srctbl' => 'template_groups',
-					'srcfld1' => 'groupid',
-					'dstfrm' => 'zbx_filter',
-					'dstfld1' => 'tpl_groupids_',
-					'with_templates' => true,
-					'editable' => true,
-					'enrich_parent_groups' => true
-				]
-			]
-		]))
-			->setWidth(ZBX_TEXTAREA_FILTER_STANDARD_WIDTH)
-			->setId('tpl_groupids_#{uniqid}')
-	)
-	->addRow((new CLabel(_('Templates'), 'templateids_#{uniqid}_ms')),
-		(new CMultiSelect([
-			'name' => 'templateids[]',
-			'object_name' => 'templates',
-			'data' => array_key_exists('templates_multiselect', $data) ? $data['templates_multiselect'] : [],
-			'popup' => [
-				'filter_preselect' => [
-					'id' => 'tpl_groupids_',
-					'submit_as' => 'templategroupid'
-				],
-				'parameters' => [
-					'srctbl' => 'templates',
-					'srcfld1' => 'hostid',
-					'dstfrm' => 'zbx_filter',
-					'dstfld1' => 'templateids_'
-				]
-			]
-		]))
-			->setWidth(ZBX_TEXTAREA_FILTER_STANDARD_WIDTH)
-			->setId('templateids_#{uniqid}')
-	)
-	->addRow((new CLabel(_('Template trigger'), 'tpl_triggerids_#{uniqid}_ms')),
+	// ->addRow((new CLabel(_('Template groups'), 'tpl_groupids_#{uniqid}_ms')),
+	// 	(new CMultiSelect([
+	// 		'name' => 'tpl_groupids[]',
+	// 		'object_name' => 'hostGroup',
+	// 		'data' => array_key_exists('tpl_groups_multiselect', $data) ? $data['tpl_groups_multiselect'] : [],
+	// 		'popup' => [
+	// 			'parameters' => [
+	// 				'srctbl' => 'template_groups',
+	// 				'srcfld1' => 'groupid',
+	// 				'dstfrm' => 'zbx_filter',
+	// 				'dstfld1' => 'tpl_groupids_',
+	// 				'with_templates' => true,
+	// 				'editable' => true,
+	// 				'enrich_parent_groups' => true
+	// 			]
+	// 		]
+	// 	]))
+	// 		->setWidth(ZBX_TEXTAREA_FILTER_STANDARD_WIDTH)
+	// 		->setId('tpl_groupids_#{uniqid}')
+	// )
+	// ->addRow((new CLabel(_('Templates'), 'templateids_#{uniqid}_ms')),
+	// 	(new CMultiSelect([
+	// 		'name' => 'templateids[]',
+	// 		'object_name' => 'templates',
+	// 		'data' => array_key_exists('templates_multiselect', $data) ? $data['templates_multiselect'] : [],
+	// 		'popup' => [
+	// 			'filter_preselect' => [
+	// 				'id' => 'tpl_groupids_',
+	// 				'submit_as' => 'templategroupid'
+	// 			],
+	// 			'parameters' => [
+	// 				'srctbl' => 'templates',
+	// 				'srcfld1' => 'hostid',
+	// 				'dstfrm' => 'zbx_filter',
+	// 				'dstfld1' => 'templateids_'
+	// 			]
+	// 		]
+	// 	]))
+	// 		->setWidth(ZBX_TEXTAREA_FILTER_STANDARD_WIDTH)
+	// 		->setId('templateids_#{uniqid}')
+	// )
+	->addRow((new CLabel(_('Template triggers'), 'tpl_triggerids_#{uniqid}_ms')),
 		(new CMultiSelect([
 			'name' => 'tpl_triggerids[]',
 			'object_name' => 'triggers',
 			'data' => array_key_exists('tpl_triggers_multiselect', $data) ? $data['tpl_triggers_multiselect'] : [],
 			'popup' => [
-				'filter_preselect' => [
-					'id' => 'templateids_',
-					'submit_as' => 'templateid'
-				],
+				// 'filter_preselect' => [
+				// 	'id' => 'templateids_',
+				// 	'submit_as' => 'templateid'
+				// ],
 				'parameters' => [
 					'srctbl' => 'template_triggers',
 					'srcfld1' => 'triggerid',
 					'dstfrm' => 'zbx_filter',
 					'dstfld1' => 'tpl_triggerids_',
-					'templateid' => '4'
+					// 'templateid' => '4'
 				]
 			]
 		]))
@@ -65,7 +65,7 @@ $filter_column = (new CFormList())
 			->setId('tpl_triggerids_#{uniqid}')
 	)
 
-	->addRow((new CLabel(_('Triggers'), 'triggerids_#{uniqid}_ms')),
+	->addRow((new CLabel(_('Host triggers'), 'triggerids_#{uniqid}_ms')),
 		(new CMultiSelect([
 			'name' => 'triggerids[]',
 			'object_name' => 'triggers',
@@ -125,13 +125,13 @@ $filter_column = (new CFormList())
 		]))
 			->setWidth(ZBX_TEXTAREA_FILTER_STANDARD_WIDTH)
 			->setId('hostids_#{uniqid}')
-	)
-	->addRow(_('Show only hosts with problems'),
-		(new CCheckBox('only_with_problems'))
-			->setChecked($data['only_with_problems'] == 1)
-			->setUncheckedValue(0)
-			->setId('only_with_problems_#{uniqid}')
-		);
+				);
+	// ->addRow(_('Show only hosts with problems'),
+	// 	(new CCheckBox('only_with_problems'))
+	// 		->setChecked($data['only_with_problems'] == 1)
+	// 		->setUncheckedValue(0)
+	// 		->setId('only_with_problems_#{uniqid}')
+	// 	);
 
 $template = (new CDiv())
 	->addClass(ZBX_STYLE_TABLE)
@@ -230,10 +230,10 @@ if (array_key_exists('render_html', $data)) {
 			name: 'tpl_triggerids[]',
 			data: data.filter_view_data.tpl_triggers_multiselect || [],
 			popup: {
-				filter_preselect: {
-					id: 'templateids_' + data.uniqid,
-					submit_as: 'templateid'
-				},
+				// filter_preselect: {
+				// 	id: 'templateids_' + data.uniqid,
+				// 	submit_as: 'templateid'
+				// },
 				parameters: {
 					multiselect: '1',
 					srctbl: 'template_triggers',
