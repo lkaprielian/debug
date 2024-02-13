@@ -8,11 +8,13 @@ $view_url = $data['view_curl']->getUrl();
 
 // print_r($data['filter']['sort']);
 
-if (array_key_exists('view_curl', $data)) {
-	$view_url = $data['view_curl'];
-	$arr = explode('&', $view_url, -1);
-	print_r($arr);
-}
+// if (array_key_exists('view_curl', $data)) {
+// 	$view_url = $data['view_curl'];
+// 	$arr = explode('&', $view_url, -1);
+// 	print_r($arr);
+// }
+
+print_r($data['filter']);
 $table->setHeader([
 	(new CColHeader(_('Host'))),
 	(new CColHeader(_('Trigger'))),
