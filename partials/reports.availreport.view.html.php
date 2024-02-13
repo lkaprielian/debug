@@ -80,7 +80,7 @@ $data = [
 ];
 
 print_r($data);
-$form->addItem([$table,	$data['paging'], $data('filter')]);
+$form->addItem([$table,	$data]);
 
 echo $form;
 ?>
