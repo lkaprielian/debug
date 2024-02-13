@@ -167,11 +167,11 @@ if (array_key_exists('render_html', $data)) {
 	return;
 }
 
-(new CTemplateTag('filter-reports-availreport'))
-	->setAttribute('data-template', 'monitoring.problem.filter')
-	->addItem($template)
-	->show();
-?>
+// (new CTemplateTag('filter-reports-availreport'))
+// 	->setAttribute('data-template', 'monitoring.problem.filter')
+// 	->addItem($template)
+// 	->show();
+// ?>
 <script type="text/javascript">
 	let template = document.querySelector('[data-template="reports.availreport.filter"]');
 
