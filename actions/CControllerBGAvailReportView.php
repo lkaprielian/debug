@@ -86,7 +86,7 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 		// $timeselector_to = $filter['filter_custom_time'] == 0 ? $filter['to'] : $profile->to;
 		
 		$data = [
-			// 'action' => $this->getAction(),
+			'action' => $this->getAction(),
 			// 'tabfilter_idx' => static::FILTER_IDX,
 			// 'filter' => $filter,
 			'filter_view' => 'reports.availreport.filter',
