@@ -7,6 +7,7 @@ if ($data['action'] == 'availreport.view') {
 	$this->addJsFile('class.calendar.js');
 	$this->addJsFile('class.tabfilter.js');
 	$this->addJsFile('class.tabfilteritem.js');
+	$this->addJsFile('class.tagfilteritem.js');
 
 	$this->enableLayoutModes();
 	$web_layout_mode = $this->getLayoutMode();
@@ -35,19 +36,36 @@ if ($data['action'] == 'availreport.view') {
 
 		// Set javascript options for tab filter initialization in module.reports.availreport.js.php file.
 		$data['filter_options'] = $filter->options;
-		$widget->addItem($filter);
+		// $widget->addItem($filter);
+		$html_page->addItem($filter);
 	}
 	else {
 		$data['filter_options'] = null;
 	}
 
-	$widget->addItem((new CForm())->setName('availreport_view')->addClass('is-loading'));
-	$widget->show();
+	// $widget->addItem((new CForm())->setName('availreport_view')->addClass('is-loading'));
+	// $widget->show();
 	$this->includeJsFile('module.reports.availreport.js.php', $data);
-
-	(new CScriptTag('availreport_page.start();'))
-	->setOnDocumentReady()
+	$html_page
+		->addItem(new CPartial('monitoring.problem.view.html', array_intersect_key($data,
+			array_flip(['page', 'action', 'sort', 'sortorder', 'filter', 'tabfilter_idx'])
+		)))
 		->show();
+
+	// (new CScriptTag('availreport_page.start();'))
+	// ->setOnDocumentReady()
+	// 	->show();
+	(new CScriptTag('
+		view.init('.json_encode([
+			'filter_options' => $data['filter_options'],
+			'refresh_url' => $data['refresh_url'],
+			'refresh_interval' => $data['refresh_interval'],
+			'filter_defaults' => $data['filter_defaults']
+		]).');
+	'))
+		->setOnDocumentReady()
+		->show();
+
 } else {
 	// $data['action'] = 'availreport.view.csv'
 	if (sizeof($data['triggers']) == 0) {
@@ -102,5 +120,9 @@ if ($data['action'] == 'availreport.view') {
 	}
 
 	print zbx_toCSV($csv);
+
+	echo (new CPartial('monitoring.problem.view.html', array_intersect_key($data,
+		array_flip(['page', 'action', 'sort', 'sortorder', 'filter', 'tabfilter_idx'])
+	)))->getOutput();
 }
 ?>
