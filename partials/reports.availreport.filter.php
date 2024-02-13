@@ -170,50 +170,16 @@ if (array_key_exists('render_html', $data)) {
 	->addItem($template)
 	->show();
 
-(new CTemplateTag('filter-inventory-row'))
-	->addItem(
-		(new CRow([
-			(new CSelect('inventory[#{rowNum}][field]'))
-				->addOptions(CSelect::createOptionsFromArray($inventories)),
-			(new CTextBox('inventory[#{rowNum}][value]', '#{value}'))
-				->removeId()
-				->setWidth(ZBX_TEXTAREA_FILTER_SMALL_WIDTH),
-			(new CCol(
-				(new CButton('inventory[#{rowNum}][remove]', _('Remove')))
-					->addClass(ZBX_STYLE_BTN_LINK)
-					->addClass('element-table-remove')
-					->removeId()
-			))->addClass(ZBX_STYLE_NOWRAP)
-		]))->addClass('form_row')
-	)
-	->show();
-
-// (new CTemplateTag('filter-tag-row-tmpl'))
+// (new CTemplateTag('filter-inventory-row'))
 // 	->addItem(
 // 		(new CRow([
-// 			(new CTextBox('tags[#{rowNum}][tag]', '#{tag}'))
-// 				->setAttribute('placeholder', _('tag'))
+// 			(new CSelect('inventory[#{rowNum}][field]'))
+// 				->addOptions(CSelect::createOptionsFromArray($inventories)),
+// 			(new CTextBox('inventory[#{rowNum}][value]', '#{value}'))
 // 				->removeId()
 // 				->setWidth(ZBX_TEXTAREA_FILTER_SMALL_WIDTH),
-// 			(new CSelect('tags[#{rowNum}][operator]'))
-// 				->addOptions(CSelect::createOptionsFromArray([
-// 					TAG_OPERATOR_EXISTS => _('Exists'),
-// 					TAG_OPERATOR_EQUAL => _('Equals'),
-// 					TAG_OPERATOR_LIKE => _('Contains'),
-// 					TAG_OPERATOR_NOT_EXISTS => _('Does not exist'),
-// 					TAG_OPERATOR_NOT_EQUAL => _('Does not equal'),
-// 					TAG_OPERATOR_NOT_LIKE => _('Does not contain')
-// 				]))
-// 				->setValue(TAG_OPERATOR_LIKE)
-// 				->setFocusableElementId('tags-#{rowNum}#{uniqid}-operator-select')
-// 				->setId('tags_#{rowNum}#{uniqid}_operator'),
-// 			(new CTextBox('tags[#{rowNum}][value]', '#{value}'))
-// 				->setAttribute('placeholder', _('value'))
-// 				->setId('tags_#{rowNum}#{uniqid}_value')
-// 				->setWidth(ZBX_TEXTAREA_FILTER_SMALL_WIDTH),
 // 			(new CCol(
-// 				(new CButton('tags[#{rowNum}][remove]', _('Remove')))
-// 					->removeId()
+// 				(new CButton('inventory[#{rowNum}][remove]', _('Remove')))
 // 					->addClass(ZBX_STYLE_BTN_LINK)
 // 					->addClass('element-table-remove')
 // 					->removeId()
@@ -221,6 +187,8 @@ if (array_key_exists('render_html', $data)) {
 // 		]))->addClass('form_row')
 // 	)
 // 	->show();
+
+
 
 ?>
 <script type="text/javascript">
@@ -417,16 +385,7 @@ if (array_key_exists('render_html', $data)) {
 		// $('#show_' + data.uniqid, container).trigger('change');
 	}
 
-	// function select(data, container) {
-	// 	if (this._template_rendered) {
-	// 		// Template rendered, use element events, trigger change to update timeselector ui disabled state.
-	// 		$('#show_' + data.uniqid, container).trigger('change');
-	// 	}
-	// 	else if (this._parent) {
-	// 		// Template is not rendered, use input data.
-	// 		this._parent.updateTimeselector(this, (data.show != <?= TRIGGERS_OPTION_ALL ?>));
-	// 	}
-	// }
+
 
 	/**
 	 * On filter apply or update buttons press update disabled UI fields.
@@ -441,18 +400,6 @@ if (array_key_exists('render_html', $data)) {
 			return;
 		}
 
-		// $('[name="highlight_row"],[name="details"],[name="show_timeline"]', container)
-		// 	.filter(':disabled')
-		// 	.prop('checked', false);
-
-		// $('[name="show_opdata"]:disabled', container)
-		// 	.prop('checked', false)
-		// 	.filter('[value="' + <?= CControllerProblem::FILTER_FIELDS_DEFAULT['show_opdata'] ?> +'"]')
-		// 	.prop('checked', true);
-
-		// if ($('[name="age_state"]', container).not(':checked').length) {
-		// 	$('[name="age"]').val(<?= CControllerProblem::FILTER_FIELDS_DEFAULT['age'] ?>);
-		// }
 	}
 
 	// Tab filter item events handlers.
