@@ -148,8 +148,8 @@ $template = (new CForm('get'))
 		(new CVar('filter_show_counter', '#{filter_show_counter}'))->removeId(),
 		(new CVar('filter_custom_time', '#{filter_custom_time}'))->removeId(),
 		(new CVar('from', '#{from}'))->removeId(),
-		(new CVar('to', '#{to}'))->removeId()
-		// (new CVar('hostids', '#{hostids}'))->removeId()
+		(new CVar('to', '#{to}'))->removeId(),
+		(new CVar('hostids', '#{hostids}'))
 
 		// (new CVar('sort', '#{sort}'))->removeId(),
 		// (new CVar('sortorder', '#{sortorder}'))->removeId()
@@ -168,7 +168,7 @@ if (array_key_exists('render_html', $data)) {
 }
 
 (new CTemplateTag('filter-reports-availreport'))
-	// ->setAttribute('data-template', 'monitoring.problem.filter')
+	->setAttribute('data-template', 'reports.availreport.filter') ///here
 	->addItem($template)
 	->show();
 
