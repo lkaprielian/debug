@@ -167,8 +167,8 @@ if (array_key_exists('render_html', $data)) {
 	return;
 }
 
-(new CTemplateTag('filter-monitoring-problem'))
-	->setAttribute('data-template', 'reports.availreport.filter')
+(new CTemplateTag('filter-reports-availreport'))
+	->setAttribute('data-template', 'monitoring.problem.filter')
 	->addItem($template)
 	->show();
 ?>
