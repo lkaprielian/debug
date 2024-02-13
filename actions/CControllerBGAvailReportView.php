@@ -80,19 +80,15 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 		$filter = $filter_tabs[$profile->selected];
 		$refresh_curl = (new CUrl('zabbix.php'));
 		$filter['action'] = 'availreport.view.refresh';
-		$filter['action_from_url'] = $this->getAction();
+		// $filter['action_from_url'] = $this->getAction();
 		array_map([$refresh_curl, 'setArgument'], array_keys($filter), $filter);
 		// $timeselector_from = $filter['filter_custom_time'] == 0 ? $filter['from'] : $profile->from;
 		// $timeselector_to = $filter['filter_custom_time'] == 0 ? $filter['to'] : $profile->to;
-
-		if (!$this->hasInput('page')) {
-			$refresh_curl->removeArgument('page');
-		}
-
+		
 		$data = [
-			'action' => $this->getAction(),
-			'tabfilter_idx' => static::FILTER_IDX,
-			'filter' => $filter,
+			// 'action' => $this->getAction(),
+			// 'tabfilter_idx' => static::FILTER_IDX,
+			// 'filter' => $filter,
 			'filter_view' => 'reports.availreport.filter',
 			'filter_defaults' => $profile->filter_defaults,
 			'tabfilter_options' => [
@@ -109,11 +105,8 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 			],
 			'filter_tabs' => $filter_tabs,
 			'refresh_url' => $refresh_curl->getUrl(),
-			'refresh_interval' => CWebUser::getRefresh() * 10000, //+++1000,
-			// 'sort' => $filter['sort'],
-			// 'sortorder' => $filter['sortorder'],
-			// 'uncheck' => $this->hasInput('filter_reset'),
-			'page' => $this->getInput('page', 1)
+			'refresh_interval' => 3600000, //+++1000,
+			// 'page' => $this->getInput('page', 1)
 		] + $this->getData($filter);
 
 		$response = new CControllerResponseData($data);
