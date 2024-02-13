@@ -79,7 +79,7 @@ $data = [
 	'paging' => $data['paging']
 ];
 
-// print_r()
+print_r($data);
 $form->addItem([$table,	$data['paging']]);
 
 echo $form;
