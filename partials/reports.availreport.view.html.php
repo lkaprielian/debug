@@ -33,7 +33,7 @@ $view_url = $data['view_curl']->getUrl();
 // 	$arr = explode('&', $view_url, -1);
 // 	print_r($arr);
 // }
-$filter = $data['filter'];
+// $filter = $data['filter'];
 
 $table->setHeader([
 	(new CColHeader(_('Host'))),
