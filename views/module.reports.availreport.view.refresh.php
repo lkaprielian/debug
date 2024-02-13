@@ -1,9 +1,10 @@
 <?php
 
-// print_r($data);
 $output = [
 	'body' => (new CPartial('reports.availreport.view.html', $data))->getOutput()
 ];
+
+print_r($data);
 
 if ($data['warning']) {
 	error($data['warning']);
