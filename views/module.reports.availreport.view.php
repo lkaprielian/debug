@@ -11,7 +11,8 @@ if ($data['action'] == 'availreport.view') {
 
 	$this->enableLayoutModes();
 	$web_layout_mode = $this->getLayoutMode();
-	$widget = (new CHtmlPage())
+
+	$html_page = (new CHtmlPage())
 		->setTitle(_('Availability report'))
 		->setWebLayoutMode($web_layout_mode)
 		->setControls(
