@@ -49,7 +49,7 @@ if ($data['action'] == 'availreport.view') {
 	$this->includeJsFile('module.reports.availreport.js.php', $data);
 	$html_page
 		->addItem(new CPartial('reports.availreport.view.html', array_intersect_key($data,
-			array_flip(['page', 'action', 'sort', 'sortorder', 'filter', 'tabfilter_idx'])
+			array_flip(['action', 'filter', 'tabfilter_idx'])
 		)))
 		->show();
 
