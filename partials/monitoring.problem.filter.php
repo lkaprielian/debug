@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<!-- <?php declare(strict_types = 1);
 
 $filter_column = (new CFormList())
 	// ->addRow((new CLabel(_('Template groups'), 'tpl_groupids_#{uniqid}_ms')),
@@ -346,4 +346,4 @@ if (array_key_exists('render_html', $data)) {
 	template.addEventListener(TABFILTERITEM_EVENT_EXPAND, function (ev) {
 		expand.call(ev.detail, ev.detail._data, ev.detail._content_container);
 	});
-</script>
+</script> -->
