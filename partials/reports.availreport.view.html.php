@@ -74,8 +74,7 @@ foreach ($triggers as $trigger) {
 }
 
 $data = [
-	'filter' => $filter,
-	'view_curl' => $view_url,
+	'filter' => $filter
 ];
 
 // print_r()
