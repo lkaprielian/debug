@@ -101,7 +101,7 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 				'support_custom_time' => 1,
 				'expanded' => $profile->expanded,
 				'page' => $filter['page'],
-				'csrf_token' => CCsrfTokenHelper::get('tabfilter'),
+				// 'csrf_token' => CCsrfTokenHelper::get('tabfilter'),
 				// 'timeselector' => [
 				// 	'from' => $profile->from,
 				// 	'to' => $profile->to,
@@ -111,9 +111,9 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 			'filter_tabs' => $filter_tabs,
 			'refresh_url' => $refresh_curl->getUrl(),
 			'refresh_interval' => CWebUser::getRefresh() * 10000, //+++1000,
-			'sort' => $filter['sort'],
-			'sortorder' => $filter['sortorder'],
-			'uncheck' => $this->hasInput('filter_reset'),
+			// 'sort' => $filter['sort'],
+			// 'sortorder' => $filter['sortorder'],
+			// 'uncheck' => $this->hasInput('filter_reset'),
 			'page' => $this->getInput('page', 1)
 		] + $this->getData($filter);
 
