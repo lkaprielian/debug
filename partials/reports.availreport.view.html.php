@@ -6,6 +6,26 @@ $table = (new CTableInfo());
 
 $view_url = $data['view_curl']->getUrl();
 
+
+
+$options = [
+	'mode' => SCREEN_MODE_JS,
+	'page' => $data['paging'],
+	'data' => [
+		'action' => $data['action'],
+		'sort' => $data['sort'],
+		'sortorder' => $data['sortorder'],
+		'filter' => [
+			'groupids' => $data['filter']['groupids'],
+			'hostids' => $data['filter']['hostids'],
+			'triggerids' => $data['filter']['triggerids']
+		],
+		'limit' => CSettingsHelper::get(CSettingsHelper::SEARCH_LIMIT)
+	]
+];
+
+echo CScreenBuilder::getScreen($options)->get();
+
 // print_r($data['filter']['sort']);
 
 // if (array_key_exists('view_curl', $data)) {
