@@ -37,10 +37,7 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 			'filter_custom_time' =>		'in 1,0',
 			'filter_show_counter' =>	'in 1,0',
 			'filter_counters' =>		'in 1',
-			'filter_set' =>				'in 1',
-			'sort' =>			'in name,status,cnt_event',
-			'sortorder' =>			'in '.ZBX_SORT_UP.','.ZBX_SORT_DOWN
-
+			'filter_set' =>				'in 1'
 		];
 		$ret = $this->validateInput($fields) && $this->validateTimeSelectorPeriod();
 
@@ -102,7 +99,7 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 				'timeselector' => [
 					'from' => $profile->from,
 					'to' => $profile->to,
-					'disabled' => false
+					'disabled' => true
 				] + getTimeselectorActions($profile->from, $profile->to)
 			],
 			'filter_tabs' => $filter_tabs,
