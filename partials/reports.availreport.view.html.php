@@ -74,7 +74,8 @@ foreach ($triggers as $trigger) {
 }
 
 $data = [
-	'filter' => $filter
+	'filter' => $filter,
+	'paging' => $data['paging']
 ];
 
 // print_r()
