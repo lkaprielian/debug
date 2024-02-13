@@ -115,7 +115,7 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 			'sortorder' => $filter['sortorder'],
 			'uncheck' => $this->hasInput('filter_reset'),
 			'page' => $this->getInput('page', 1)
-		];
+		] + $this->getData($filter);
 
 		$response = new CControllerResponseData($data);
 		$response->setTitle(_('Availability report'));
