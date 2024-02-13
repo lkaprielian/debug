@@ -44,11 +44,11 @@ if ($data['action'] == 'availreport.view') {
 		$data['filter_options'] = null;
 	}
 
-	$html_page->addItem((new CForm())->setName('availreport_view')->addClass('is-loading'));
-	$html_page->show();
+	// $widget->addItem((new CForm())->setName('availreport_view')->addClass('is-loading'));
+	// $widget->show();
 	$this->includeJsFile('module.reports.availreport.js.php', $data);
 	$html_page
-		->addItem(new CPartial('monitoring.problem.view.html', array_intersect_key($data,
+		->addItem(new CPartial('reports.availreport.view.html', array_intersect_key($data,
 			array_flip(['page', 'action', 'sort', 'sortorder', 'filter', 'tabfilter_idx'])
 		)))
 		->show();
@@ -122,7 +122,7 @@ if ($data['action'] == 'availreport.view') {
 
 	print zbx_toCSV($csv);
 
-	echo (new CPartial('monitoring.problem.view.html', array_intersect_key($data,
+	echo (new CPartial('reports.availreport.view.html', array_intersect_key($data,
 		array_flip(['page', 'action', 'sort', 'sortorder', 'filter', 'tabfilter_idx'])
 	)))->getOutput();
 }
