@@ -1,7 +1,7 @@
 <?php
 
 $output = [
-	'body' => (new CPartial('reports.availreport.view.html', $data['paging']))->getOutput()
+	'body' => (new CPartial('reports.availreport.view.html', $data))->getOutput()
 ];
 
 
