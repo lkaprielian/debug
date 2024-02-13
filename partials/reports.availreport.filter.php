@@ -148,7 +148,9 @@ $template = (new CForm('get'))
 		(new CVar('filter_show_counter', '#{filter_show_counter}'))->removeId(),
 		(new CVar('filter_custom_time', '#{filter_custom_time}'))->removeId(),
 		(new CVar('from', '#{from}'))->removeId(),
-		(new CVar('to', '#{to}'))->removeId()
+		(new CVar('to', '#{to}'))->removeId(),
+		(new CVar('hostids', '#{hostids}'))->removeId()
+
 		// (new CVar('sort', '#{sort}'))->removeId(),
 		// (new CVar('sortorder', '#{sortorder}'))->removeId()
 	]);
