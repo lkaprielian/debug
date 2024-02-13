@@ -7,12 +7,11 @@ if ($data['action'] == 'availreport.view') {
 	$this->addJsFile('class.calendar.js');
 	$this->addJsFile('class.tabfilter.js');
 	$this->addJsFile('class.tabfilteritem.js');
-	$this->addJsFile('class.tagfilteritem.js');
 
 	$this->enableLayoutModes();
 	$web_layout_mode = $this->getLayoutMode();
 
-	$html_page = (new CHtmlPage())
+	$widget = (new CHtmlPage())
 		->setTitle(_('Availability report'))
 		->setWebLayoutMode($web_layout_mode)
 		->setControls(
@@ -37,35 +36,19 @@ if ($data['action'] == 'availreport.view') {
 
 		// Set javascript options for tab filter initialization in module.reports.availreport.js.php file.
 		$data['filter_options'] = $filter->options;
-		// $widget->addItem($filter);
-		$html_page->addItem($filter);
+		$widget->addItem($filter);
 	}
 	else {
 		$data['filter_options'] = null;
 	}
 
-	$html_page->addItem((new CForm())->setName('availreport_view')->addClass('is-loading'));
-	$html_page->show();
-	$this->includeJsFile('module.reports.availreport.js.php', $data);
-	// $html_page
-	// 	->addItem(new CPartial('reports.availreport.view.html', array_intersect_key($data,
-	// 		array_flip(['action', 'filter', 'tabfilter_idx'])
-	// 	)))
-	// 	->show();
+	$widget->addItem((new CForm())->setName('availreport_view')->addClass('is-loading'));
+	$widget->show();
 
-	// (new CScriptTag('availreport_page.start();'))
-	// ->setOnDocumentReady()
-	// 	->show();
-	(new CScriptTag('
-		availreport_page.start();
-		view.init('.json_encode([
-			'filter_options' => $data['filter_options'],
-			'refresh_url' => $data['refresh_url'],
-			'refresh_interval' => $data['refresh_interval'],
-			'filter_defaults' => $data['filter_defaults']
-		]).');
-	'))
-		->setOnDocumentReady()
+	$this->includeJsFile('module.reports.availreport.js.php', $data);
+
+	(new CScriptTag('availreport_page.start();'))
+	->setOnDocumentReady()
 		->show();
 
 } else {
@@ -123,8 +106,5 @@ if ($data['action'] == 'availreport.view') {
 
 	print zbx_toCSV($csv);
 
-	echo (new CPartial('reports.availreport.view.html', array_intersect_key($data,
-		array_flip(['page', 'action', 'sort', 'sortorder', 'filter', 'tabfilter_idx'])
-	)))->getOutput();
 }
 ?>
