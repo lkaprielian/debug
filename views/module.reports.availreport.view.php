@@ -44,8 +44,8 @@ if ($data['action'] == 'availreport.view') {
 		$data['filter_options'] = null;
 	}
 
-	// $widget->addItem((new CForm())->setName('availreport_view')->addClass('is-loading'));
-	// $widget->show();
+	$html_page->addItem((new CForm())->setName('availreport_view')->addClass('is-loading'));
+	$html_page->show();
 	$this->includeJsFile('module.reports.availreport.js.php', $data);
 	$html_page
 		->addItem(new CPartial('monitoring.problem.view.html', array_intersect_key($data,
