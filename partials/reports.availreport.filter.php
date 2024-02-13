@@ -393,9 +393,6 @@ if (array_key_exists('render_html', $data)) {
 				}
 
 				if ($(form).find('[name="filter_custom_time"]').val() == 1) {
-					$('[name="show"][value="<?= TRIGGERS_OPTION_ALL ?>"]', form).prop('checked', true);
-					$('#show_' + this._data.uniqid, form).trigger('change');
-					this.setUrlArgument('show', <?= TRIGGERS_OPTION_ALL ?>);
 					this.updateUnsavedState();
 					this.setBrowserLocationToApplyUrl();
 				}
@@ -405,7 +402,7 @@ if (array_key_exists('render_html', $data)) {
 				let form = this.getForm();
 
 				if ($(form).find('[name="filter_custom_time"]').val() == 1) {
-					$('[name="show"][value="<?= TRIGGERS_OPTION_ALL ?>"]', form).prop('checked', true);
+					$(form).prop('checked', true);
 				}
 			});
 		}
@@ -416,20 +413,20 @@ if (array_key_exists('render_html', $data)) {
 		$('[name="filter_new"],[name="filter_update"]').hide()
 			.filter(data.filter_configurable ? '[name="filter_update"]' : '[name="filter_new"]').show();
 
-		// Trigger change to update timeselector ui disabled state.
-		$('#show_' + data.uniqid, container).trigger('change');
+		// // Trigger change to update timeselector ui disabled state.
+		// $('#show_' + data.uniqid, container).trigger('change');
 	}
 
-	function select(data, container) {
-		if (this._template_rendered) {
-			// Template rendered, use element events, trigger change to update timeselector ui disabled state.
-			$('#show_' + data.uniqid, container).trigger('change');
-		}
-		else if (this._parent) {
-			// Template is not rendered, use input data.
-			this._parent.updateTimeselector(this, (data.show != <?= TRIGGERS_OPTION_ALL ?>));
-		}
-	}
+	// function select(data, container) {
+	// 	if (this._template_rendered) {
+	// 		// Template rendered, use element events, trigger change to update timeselector ui disabled state.
+	// 		$('#show_' + data.uniqid, container).trigger('change');
+	// 	}
+	// 	else if (this._parent) {
+	// 		// Template is not rendered, use input data.
+	// 		this._parent.updateTimeselector(this, (data.show != <?= TRIGGERS_OPTION_ALL ?>));
+	// 	}
+	// }
 
 	/**
 	 * On filter apply or update buttons press update disabled UI fields.
@@ -444,18 +441,18 @@ if (array_key_exists('render_html', $data)) {
 			return;
 		}
 
-		$('[name="highlight_row"],[name="details"],[name="show_timeline"]', container)
-			.filter(':disabled')
-			.prop('checked', false);
+		// $('[name="highlight_row"],[name="details"],[name="show_timeline"]', container)
+		// 	.filter(':disabled')
+		// 	.prop('checked', false);
 
-		$('[name="show_opdata"]:disabled', container)
-			.prop('checked', false)
-			.filter('[value="' + <?= CControllerProblem::FILTER_FIELDS_DEFAULT['show_opdata'] ?> +'"]')
-			.prop('checked', true);
+		// $('[name="show_opdata"]:disabled', container)
+		// 	.prop('checked', false)
+		// 	.filter('[value="' + <?= CControllerProblem::FILTER_FIELDS_DEFAULT['show_opdata'] ?> +'"]')
+		// 	.prop('checked', true);
 
-		if ($('[name="age_state"]', container).not(':checked').length) {
-			$('[name="age"]').val(<?= CControllerProblem::FILTER_FIELDS_DEFAULT['age'] ?>);
-		}
+		// if ($('[name="age_state"]', container).not(':checked').length) {
+		// 	$('[name="age"]').val(<?= CControllerProblem::FILTER_FIELDS_DEFAULT['age'] ?>);
+		// }
 	}
 
 	// Tab filter item events handlers.
@@ -465,7 +462,7 @@ if (array_key_exists('render_html', $data)) {
 	template.addEventListener(TABFILTERITEM_EVENT_EXPAND, function(ev) {
 		expand.call(ev.detail, ev.detail._data, ev.detail._content_container);
 	});
-	template.addEventListener(TABFILTERITEM_EVENT_SELECT, function(ev) {
-		select.call(ev.detail, ev.detail._data, ev.detail._content_container);
-	});
+	// template.addEventListener(TABFILTERITEM_EVENT_SELECT, function(ev) {
+	// 	select.call(ev.detail, ev.detail._data, ev.detail._content_container);
+	// });
 </script>
