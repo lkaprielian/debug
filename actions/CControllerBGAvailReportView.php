@@ -101,7 +101,7 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 				'support_custom_time' => 1,
 				'expanded' => $profile->expanded,
 				'page' => $filter['page'],
-				// 'csrf_token' => CCsrfTokenHelper::get('tabfilter'),
+				'csrf_token' => CCsrfTokenHelper::get('tabfilter'),
 				// 'timeselector' => [
 				// 	'from' => $profile->from,
 				// 	'to' => $profile->to,
