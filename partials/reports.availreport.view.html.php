@@ -74,6 +74,7 @@ foreach ($triggers as $trigger) {
 }
 
 $data = [
+	'view_curl' => $view_url,
 	'filter' => $filter,
 	'paging' => $data['paging']
 ];
