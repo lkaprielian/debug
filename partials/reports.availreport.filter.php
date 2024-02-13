@@ -231,151 +231,73 @@ if (array_key_exists('render_html', $data)) {
 		$('[name="filter_new"],[name="filter_update"]').hide()
 			.filter(data.filter_configurable ? '[name="filter_update"]' : '[name="filter_new"]').show();
 
-		let fields = ['show', 'name', 'tag_priority', 'show_opdata', 'show_symptoms', 'show_suppressed', 'show_tags',
-				'unacknowledged', 'compact_view', 'show_timeline', 'details', 'highlight_row', 'age_state', 'age',
-				'tag_name_format', 'evaltype'
-			],
-			eventHandler = {
-				show: () => {
-					// Dynamically disable hidden input elements to allow correct detection of unsaved changes.
-					var	filter_show = ($('input[name="show"]:checked', container).val() != <?= TRIGGERS_OPTION_ALL ?>),
-						filter_custom_time = $('[name="filter_custom_time"]', container).val(),
-						disabled = (!filter_show || !$('[name="age_state"]:checked', container).length);
-
-					$('[name="age"]', container).attr('disabled', disabled).closest('li').toggle(filter_show);
-					$('[name="age_state"]', container).attr('disabled', !filter_show);
-
-					if (!filter_show && filter_custom_time == 1) {
-						$('[name="show"]', container)
-							.prop('checked', false)
-							.attr('disabled', 'disabled')
-							.filter('[value="<?= TRIGGERS_OPTION_ALL ?>"]')
-							.prop('checked', true)
-							.removeAttr('disabled');
-						this.setUrlArgument('show', <?= TRIGGERS_OPTION_ALL ?>);
-					}
-					else {
-						$('[name="show"]', container).removeAttr('disabled');
-					}
-
-					if (this._parent) {
-						this._parent.updateTimeselector(this, filter_show || (filter_custom_time == 1));
-					}
-				},
-				age_state: (ev) => {
-					$('[name="age"]', container).prop('disabled', !$('[name="age_state"]', container).is(':checked'));
-				},
-				compact_view: () => {
-					let checked = $('[name="compact_view"]', container).is(':checked');
-
-					$('[name="show_timeline"]', container).prop('disabled', checked);
-					$('[name="details"]', container).prop('disabled', checked);
-					$('[name="show_opdata"]', container).prop('disabled', checked);
-					$('[name="highlight_row"]', container).prop('disabled', !checked);
-				},
-				show_tags: () => {
-					let disabled = ($('[name="show_tags"]:checked', container).val() == <?= SHOW_TAGS_NONE ?>);
-
-					$('[name="tag_priority"]', container).prop('disabled', disabled);
-					$('[name="tag_name_format"]', container).prop('disabled', disabled);
-				}
-			};
-
-		// Input, radio and single checkboxes.
-		fields.forEach((key) => {
-			var elm = $('[name="' + key + '"]', container);
-
-			if (elm.is(':radio,:checkbox')) {
-				elm.filter('[value="' + data[key] + '"]').attr('checked', true);
-			}
-			else {
-				elm.val(data[key]);
-			}
-		});
 
 		// Show timeline default value is checked and it will be rendered in template therefore initialize if unchecked.
 		$('[name="show_timeline"][unchecked-value="' + data['show_timeline'] + '"]', container).removeAttr('checked');
 
-		// Severities checkboxes.
-		for (const value in data.severities) {
-			$('[name="severities[' + value + ']"]', container).attr('checked', true);
-		}
 
-		// Inventory table.
-		if (data.inventory.length == 0) {
-			data.inventory.push({'field': '', 'value': ''});
-		}
-		$('#filter-inventory_' + data.uniqid, container).dynamicRows({
-			template: '#filter-inventory-row',
-			rows: data.inventory,
-			counter: 0
-		});
-
-		// Tags table.
-		if (data.tags.length == 0) {
-			data.tags.push({'tag': '', 'value': '', 'operator': <?= TAG_OPERATOR_LIKE ?>});
-		}
-
-		$('#filter-tags_' + data.uniqid, container)
-			.dynamicRows({
-				template: '#filter-tag-row-tmpl',
-				rows: data.tags,
-				counter: 0,
-				dataCallback: (tag) => {
-					tag.uniqid = data.uniqid
-					return tag;
-				}
-			})
-			.on('afteradd.dynamicRows', function() {
-				var rows = this.querySelectorAll('.form_row');
-				new CTagFilterItem(rows[rows.length - 1]);
-			});
-
-		// Init existing fields once loaded.
-		document.querySelectorAll('#filter-tags_' + data.uniqid + ' .form_row').forEach(row => {
-			new CTagFilterItem(row);
-		});
-
-		// Host groups multiselect.
-		$('#groupids_' + data.uniqid, container).multiSelectHelper({
-			id: 'groupids_' + data.uniqid,
+		// Template groups multiselect.
+		$('#tpl_groupids_' + data.uniqid, container).multiSelectHelper({
+			id: 'tpl_groupids_' + data.uniqid,
 			object_name: 'hostGroup',
-			name: 'groupids[]',
-			data: data.filter_view_data.groups || [],
+			name: 'tpl_groupids[]',
+			data: data.filter_view_data.tpl_groups_multiselect || [],
 			objectOptions: {
-				with_hosts: 1,
 				enrich_parent_groups: 1
 			},
+			selectedLimit: 1,
 			popup: {
 				parameters: {
-					srctbl: 'host_groups',
+					srctbl: 'template_groups',
 					srcfld1: 'groupid',
 					dstfrm: 'zbx_filter',
-					dstfld1: 'groupids_' + data.uniqid,
-					multiselect: 1,
-					real_hosts: 1,
+					dstfld1: 'tpl_groupids_' + data.uniqid,
+					with_templates: 1,
+					editable: 1,
 					enrich_parent_groups: 1
 				}
 			}
 		});
 
-		// Hosts multiselect.
-		$('#hostids_' + data.uniqid, container).multiSelectHelper({
-			id: 'hostids_' + data.uniqid,
-			object_name: 'hosts',
-			name: 'hostids[]',
-			data: data.filter_view_data.hosts || [],
+		// Templates multiselect.
+		$('#templateids_' + data.uniqid, container).multiSelectHelper({
+			id: 'templateids_' + data.uniqid,
+			object_name: 'templates',
+			name: 'templateids[]',
+			data: data.filter_view_data.templates_multiselect || [],
+			selectedLimit: 1,
 			popup: {
 				filter_preselect: {
-					id: 'groupids_' + data.uniqid,
-					submit_as: 'groupid'
+					id: 'tpl_groupids_' + data.uniqid,
+					submit_as: 'templategroupid'
 				},
 				parameters: {
-					multiselect: 1,
-					srctbl: 'hosts',
+					srctbl: 'templates',
 					srcfld1: 'hostid',
 					dstfrm: 'zbx_filter',
-					dstfld1: 'hostids_' + data.uniqid,
+					dstfld1: 'templateids_' + data.uniqid,
+					multiselect: 1
+				}
+			}
+		});
+
+		// Template triggers multiselect.
+		$('#tpl_triggerids_' + data.uniqid, container).multiSelectHelper({
+			id: 'tpl_triggerids_' + data.uniqid,
+			object_name: 'templates',
+			name: 'tpl_triggerids[]',
+			data: data.filter_view_data.tpl_triggers_multiselect || [],
+			popup: {
+				// filter_preselect: {
+				// 	id: 'templateids_' + data.uniqid,
+				// 	submit_as: 'templateid'
+				// },
+				parameters: {
+					multiselect: '1',
+					srctbl: 'template_triggers',
+					srcfld1: 'triggerid',
+					dstfrm: 'zbx_filter',
+					dstfld1: 'tpl_triggerids_' + data.uniqid
 				}
 			}
 		});
@@ -403,10 +325,59 @@ if (array_key_exists('render_html', $data)) {
 			}
 		});
 
-		$('#show_' + data.uniqid, container).change(eventHandler.show).trigger('change');
-		$('[name="age_state"]').change(eventHandler.age_state).trigger('change');
-		$('[name="compact_view"]', container).change(eventHandler.compact_view).trigger('change');
-		$('[name="show_tags"]', container).change(eventHandler.show_tags).trigger('change');
+		// Host groups multiselect.
+		$('#hostgroupids_' + data.uniqid, container).multiSelectHelper({
+			id: 'hostgroupids_' + data.uniqid,
+			object_name: 'hostGroup',
+			name: 'hostgroupids[]',
+			data: data.filter_view_data.hostgroups_multiselect || [],
+			objectOptions: {
+				real_hosts: 1,
+				enrich_parent_groups: 1
+			},
+			popup: {
+				parameters: {
+					multiselect: '1',
+					srctbl: 'host_groups',
+					srcfld1: 'groupid',
+					dstfrm: 'zbx_filter',
+					dstfld1: 'hostgroupids_' + data.uniqid,
+					real_hosts: 1,
+					enrich_parent_groups: 1
+				}
+			}
+		});
+
+		// Hosts multiselect.
+		$('#hostids_' + data.uniqid, container).multiSelectHelper({
+			id: 'hostids_' + data.uniqid,
+			object_name: 'hosts',
+			name: 'hostids[]',
+			data: data.filter_view_data.hosts_multiselect || [],
+			objectOptions: {
+				real_hosts: 1
+			},
+			popup: {
+				parameters: {
+					multiselect: '1',
+					srctbl: 'hosts',
+					srcfld1: 'hostid',
+					dstfrm: 'zbx_filter',
+					dstfld1: 'hostids_' + data.uniqid,
+					real_hosts: 1
+				}
+			}
+		});
+
+		// let only_with_problems_checkbox = $('[name="only_with_problems"]');
+		// if (only_with_problems_checkbox.attr('unchecked-value') === data['only_with_problems']) {
+		// 	only_with_problems_checkbox.removeAttr('checked');
+		// }
+
+		// $('#show_' + data.uniqid, container).change(eventHandler.show).trigger('change');
+		// $('[name="age_state"]').change(eventHandler.age_state).trigger('change');
+		// $('[name="compact_view"]', container).change(eventHandler.compact_view).trigger('change');
+		// $('[name="show_tags"]', container).change(eventHandler.show_tags).trigger('change');
 
 		// Initialize src_url.
 		this.resetUnsavedState();
