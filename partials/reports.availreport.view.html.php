@@ -73,14 +73,14 @@ foreach ($triggers as $trigger) {
 	]);
 }
 
-$data = [
-	'view_curl' => $view_url,
-	'filter' => $filter,
-	'paging' => $data['paging']
-];
+// $data = [
+// 	'view_curl' => $view_url,
+// 	'filter' => $filter,
+// 	'paging' => $data['paging']
+// ];
 
-// print_r($data);
-$form->addItem([$table,	$data]);
+// print_r($data)
+$form->addItem([$table,	$data['paging']]);
 
 echo $form;
 ?>

@@ -1,7 +1,7 @@
 <?php
 
 $output = [
-	'body' => (new CPartial('reports.availreport.view.html', $data))->getOutput()
+	'body' => (new CPartial('reports.availreport.view.html', $data['filter']))->getOutput()
 ];
 
 if ($data['warning']) {
