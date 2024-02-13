@@ -44,14 +44,14 @@ if ($data['action'] == 'availreport.view') {
 		$data['filter_options'] = null;
 	}
 
-	$html_page->addItem((new CForm())->setName('availreport_view')->addClass('is-loading'));
-	$html_page->show();
+	// $html_page->addItem((new CForm())->setName('availreport_view')->addClass('is-loading'));
+	// $html_page->show();
 	$this->includeJsFile('module.reports.availreport.js.php', $data);
-	// $html_page
-	// 	->addItem(new CPartial('reports.availreport.view.html', array_intersect_key($data,
-	// 		array_flip(['page', 'action', 'sort', 'sortorder', 'filter', 'tabfilter_idx'])
-	// 	)))
-	// 	->show();
+	$html_page
+		->addItem(new CPartial('reports.availreport.view.html', array_intersect_key($data,
+			array_flip(['page', 'action', 'sort', 'sortorder', 'filter', 'tabfilter_idx'])
+		)))
+		->show();
 
 	// (new CScriptTag('availreport_page.start();'))
 	// ->setOnDocumentReady()
