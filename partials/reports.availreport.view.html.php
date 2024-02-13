@@ -13,8 +13,8 @@ $view_url = $data['view_curl']->getUrl();
 // 	$arr = explode('&', $view_url, -1);
 // 	print_r($arr);
 // }
+$filter = $data['filter'];
 
-print_r($data['filter']);
 $table->setHeader([
 	(new CColHeader(_('Host'))),
 	(new CColHeader(_('Trigger'))),
@@ -73,6 +73,12 @@ foreach ($triggers as $trigger) {
 	]);
 }
 
+$data = [
+	'filter' => $filter,
+	'view_curl' => $view_url,
+];
+
+// print_r()
 $form->addItem([$table,	$data['paging']]);
 
 echo $form;
