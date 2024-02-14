@@ -167,21 +167,21 @@ if (array_key_exists('render_html', $data)) {
 	return;
 }
 
-// (new CTemplateTag('filter-reports-availreport'))
-// 	->setAttribute('data-template', 'reports.availreport.filter') ///here
-// 	->addItem($template)
-// 	->show();
-$html_page->setControls((new CForm('get'))
-	->setAttribute('aria-label', _('Main filter'))
-	->addItem((new CList())
-		->addItem([
-			new CLabel(_('Mode'), $select_mode->getFocusableElementId()),
-			(new CDiv())->addClass(ZBX_STYLE_FORM_INPUT_MARGIN),
-			$select_mode
-		])
-	)
-	->setName('report2')
-);
+(new CTemplateTag('filter-reports-availreport'))
+	->setAttribute('data-template', 'reports.availreport.filter') ///here
+	->addItem($template)
+	->show();
+	$html_page->setControls((new CForm('get'))
+		->setAttribute('aria-label', _('Main filter'))
+		->addItem((new CList())
+			->addItem([
+				new CLabel(_('Mode'), $select_mode->getFocusableElementId()),
+				(new CDiv())->addClass(ZBX_STYLE_FORM_INPUT_MARGIN),
+				$select_mode
+			])
+		)
+		->setName('report2')
+	);
 ?>
 <script type="text/javascript">
 	let template = document.querySelector('[data-template="reports.availreport.filter"]');
