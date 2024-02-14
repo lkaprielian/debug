@@ -55,10 +55,10 @@
 			// this.initAcknowledge();
 			// this.initExpandables();
 
-			if (this.refresh_interval != 0) {
-				this.running = true;
-				this.scheduleRefresh();
-			}
+			// if (this.refresh_interval != 0) {
+			// 	this.running = true;
+			// 	this.scheduleRefresh();
+			// }
 
 		}
 	};
