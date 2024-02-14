@@ -15,38 +15,34 @@
 			this.deferred = null;
 
 			if (filter_options) {
+				this.refresh_counters = this.createCountersRefresh(1);
+				this.filter = new CTabFilter($('#reports_availreport_filter')[0], filter_options);
+				this.filter.on(TABFILTER_EVENT_URLSET, (ev) => {
+					let url = new Curl('', false);
 
-				this.refresh_url = new Curl(refresh_url, false);
-				this.refresh_interval = refresh_interval;
+					url.setArgument('action', 'availreport.view.refresh');
+					this.refresh_url = url.getUrl();
+					this.unscheduleRefresh();
+					this.refresh();
 
-				const url = new Curl('zabbix.php', false);
-				url.setArgument('action', 'availreport.view.refresh');
-				this.refresh_url = url.getUrl();
+					var filter_item = this.filter._active_item;
 
-				this.initTabFilter(filter_options);
-
-				this.host_view_form = $('form[name=availreport_view]');
-				this.running = true;
-				this.refresh();
-
+					if (this.filter._active_item.hasCounter()) {
+						$.post('zabbix.php', {
+							action: 'availreport.view.refresh',
+							filter_counters: 1,
+							counter_index: filter_item._index
+						}).done((json) => {
+							if (json.filter_counters) {
+								filter_item.updateCounter(json.filter_counters.pop());
+							}
+						});
+					}
+				});
 			}
 		}
 
-
 		availreportPage.prototype = {
-
-			initTabFilter: function(filter_options) {
-			if (!filter_options) {
-				return;
-			}
-
-			this.refresh_counters = this.createCountersRefresh(1);
-			this.filter = new CTabFilter($('#reports_availreport_filter')[0], filter_options);
-			this.filter.on(TABFILTER_EVENT_URLSET, () => {
-				this.reloadPartialAndTabCounters();
-				});
-			},
-
 			createCountersRefresh: function(timeout) {
 				if (this.refresh_counters) {
 					clearTimeout(this.refresh_counters);
@@ -173,29 +169,6 @@
 					this.deferred.abort();
 				}
 			},
-			
-			reloadPartialAndTabCounters: function()  {
-			this.refresh_url = new Curl('', false);
-
-			this.unscheduleRefresh();
-			this.refresh();
-
-			// Filter is not present in Kiosk mode.
-			if (this.filter) {
-				const filter_item = this.filter._active_item;
-
-				if (this.filter._active_item.hasCounter()) {
-					$.post(this.refresh_simple_url, {
-						filter_counters: 1,
-						counter_index: filter_item._index
-					}).done((json) => {
-						if (json.filter_counters) {
-							filter_item.updateCounter(json.filter_counters.pop());
-						}
-					});
-				}
-			}
-		},
 			start: function() {
 				this.running = true;
 				this.refresh();
