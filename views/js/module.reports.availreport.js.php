@@ -76,6 +76,7 @@
 			// Activate blinking.
 			jqBlink.blink();
 		},
+		
 
 		initFilter(filter_options) {
 			if (!filter_options) {
@@ -377,5 +378,5 @@
 	// 			view.refreshCounters();
 	// 		}
 	// 	}
-	// };
+	};
 </script>
