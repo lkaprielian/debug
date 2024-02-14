@@ -84,10 +84,10 @@
 
 			this.filter = new CTabFilter($('#reports_availreport_filter')[0], filter_options);
 			this.active_filter = this.filter._active_item;
-			this.global_timerange = {
-				from: filter_options.timeselector.from,
-				to: filter_options.timeselector.to
-			};
+			// this.global_timerange = {
+			// 	from: filter_options.timeselector.from,
+			// 	to: filter_options.timeselector.to
+			// };
 
 			/**
 			 * Update on filter changes.
@@ -137,116 +137,32 @@
 
 			this.refreshCounters();
 
-			// Keep timeselector changes in global_timerange.
-			$.subscribe('timeselector.rangeupdate', (e, data) => {
-				if (data.idx === '<?= CControllerProblem::FILTER_IDX ?>') {
-					this.global_timerange.from = data.from;
-					this.global_timerange.to = data.to;
-				}
 
-				this.refresh_url.setArgument('page', 1);
-				this.refreshResults();
-			});
-		},
 
-		initAcknowledge() {
-			$.subscribe('acknowledge.create', function(event, response) {
-				// Clear all selected checkboxes in Monitoring->Problems.
-				if (chkbxRange.prefix === 'problem') {
-					chkbxRange.checkObjectAll(chkbxRange.pageGoName, false);
-					chkbxRange.clearSelectedOnFilterChange();
-				}
+		// initAcknowledge() {
+		// 	$.subscribe('acknowledge.create', function(event, response) {
+		// 		// Clear all selected checkboxes in Monitoring->Problems.
+		// 		if (chkbxRange.prefix === 'problem') {
+		// 			chkbxRange.checkObjectAll(chkbxRange.pageGoName, false);
+		// 			chkbxRange.clearSelectedOnFilterChange();
+		// 		}
 
-				view.refreshNow();
+		// 		view.refreshNow();
 
-				clearMessages();
-				addMessage(makeMessageBox('good', [], response.success.title));
-			});
+		// 		clearMessages();
+		// 		addMessage(makeMessageBox('good', [], response.success.title));
+		// 	});
 
-			$(document).on('submit', '#problem_form', function(e) {
-				e.preventDefault();
+		// 	$(document).on('submit', '#problem_form', function(e) {
+		// 		e.preventDefault();
 
-				acknowledgePopUp({eventids: Object.keys(chkbxRange.getSelectedIds())}, this);
-			});
-		},
+		// 		acknowledgePopUp({eventids: Object.keys(chkbxRange.getSelectedIds())}, this);
+		// 	});
+		// },
 
-		initExpandables() {
-			const table = this.getCurrentResultsTable();
-			const expandable_buttons = table.querySelectorAll("button[data-action='show_symptoms']");
-
-			expandable_buttons.forEach((btn, idx, array) => {
-				['click','keydown'].forEach((type) => {
-					btn.addEventListener(type, (e) => {
-						if (e.type === 'click' || e.which === 13) {
-							this.showSymptoms(btn, idx, array);
-						}
-					});
-				});
-
-				// Check if cause events were opened. If so, after (not full) refresh open them again.
-				if (this.opened_eventids.includes(btn.dataset.eventid)) {
-					const rows = table.querySelectorAll("tr[data-cause-eventid='" + btn.dataset.eventid + "']");
-
-					[...rows].forEach((row) => row.classList.remove('hidden'));
-
-					btn.classList.replace('<?= ZBX_STYLE_BTN_WIDGET_EXPAND ?>', '<?= ZBX_STYLE_BTN_WIDGET_COLLAPSE ?>');
-					btn.title = '<?= _('Collapse') ?>';
-				}
-			});
-
-			// Fix last row border depending if it is opened or closed.
-			const rows = table.querySelectorAll('.problem-row');
-
-			if (rows.length > 0) {
-				const row = [...rows].pop();
-				const btn = row.querySelector('button[data-action="show_symptoms"]');
-				const is_collapsed = btn !== null && btn.classList.contains('<?= ZBX_STYLE_BTN_WIDGET_EXPAND ?>');
-
-				[...row.children].forEach((td) => td.style.borderBottomStyle = is_collapsed ? 'hidden' : 'solid');
-			}
-		},
-
-		showSymptoms(btn, idx, array) {
-			// Prevent multiple clicking by first disabling button.
-			btn.disabled = true;
-
-			const table = this.getCurrentResultsTable();
-			let rows = table.querySelectorAll("tr[data-cause-eventid='" + btn.dataset.eventid + "']");
-
-			// Show symptom rows for current cause. Sliding animations are not supported on table rows.
-			if (rows[0].classList.contains('hidden')) {
-				btn.classList.replace('<?= ZBX_STYLE_BTN_WIDGET_EXPAND ?>', '<?= ZBX_STYLE_BTN_WIDGET_COLLAPSE ?>');
-				btn.title = '<?= _('Collapse') ?>';
-
-				this.opened_eventids.push(btn.dataset.eventid);
-
-				[...rows].forEach((row) => row.classList.remove('hidden'));
-			}
-			else {
-				btn.classList.replace('<?= ZBX_STYLE_BTN_WIDGET_COLLAPSE ?>', '<?= ZBX_STYLE_BTN_WIDGET_EXPAND ?>');
-				btn.title = '<?= _('Expand') ?>';
-
-				this.opened_eventids = this.opened_eventids.filter((id) => id !== btn.dataset.eventid);
-
-				[...rows].forEach((row) => row.classList.add('hidden'));
-			}
-
-			// Fix last row border depending if it is opened or closed.
-			rows = table.querySelectorAll('.problem-row');
-
-			if (rows.length > 0) {
-				const row = [...rows].pop();
-				const is_collapsed = btn !== null && btn.classList.contains('<?= ZBX_STYLE_BTN_WIDGET_EXPAND ?>');
-
-				[...row.children].forEach((td) => td.style.borderBottomStyle = is_collapsed ? 'hidden' : 'solid');
-			}
-
-			// When complete enable button again.
-			btn.disabled = false;
-		},
 
 		getCurrentResultsTable() {
-			return document.getElementById('flickerfreescreen_problem');
+			return $('div[id=reports_availreport_filter]');
 		},
 
 		getCurrentDebugBlock() {
@@ -254,11 +170,14 @@
 		},
 
 		setLoading() {
-			this.getCurrentResultsTable().classList.add('is-loading', 'is-loading-fadein', 'delayed-15s');
+			// this.getCurrentResultsTable().classList.add('is-loading', 'is-loading-fadein', 'delayed-15s');
+			$('div[id=reports_availreport_filter]').addClass('is-loading is-loading-fadein');
+
 		},
 
 		clearLoading() {
-			this.getCurrentResultsTable().classList.remove('is-loading', 'is-loading-fadein', 'delayed-15s');
+			// this.getCurrentResultsTable().classList.remove('is-loading', 'is-loading-fadein', 'delayed-15s');
+			$('div[id=reports_availreport_filter]').addClass('is-loading is-loading-fadein');
 		},
 
 		refreshBody(body) {
@@ -266,7 +185,7 @@
 				new DOMParser().parseFromString(body, 'text/html').body.firstElementChild
 			);
 			chkbxRange.init();
-			this.initExpandables();
+			// this.initExpandables();
 		},
 
 		refreshDebug(debug) {
@@ -358,22 +277,22 @@
 			const refresh_url = new Curl('zabbix.php');
 			const data = Object.assign({}, this.filter_defaults, this.global_timerange, url.getArgumentsObject());
 
-			// Modify filter data.
-			data.inventory = data.inventory
-				? data.inventory.filter(inventory => 'value' in inventory && inventory.value !== '')
-				: data.inventory;
-			data.tags = data.tags
-				? data.tags.filter(tag => !(tag.tag === '' && tag.value === ''))
-				: data.tags;
-			data.severities = data.severities
-				? data.severities.filter((value, key) => value == key)
-				: data.severities;
-			data.page = this.refresh_url.getArgument('page') ?? 1;
+			// // Modify filter data.
+			// data.inventory = data.inventory
+			// 	? data.inventory.filter(inventory => 'value' in inventory && inventory.value !== '')
+			// 	: data.inventory;
+			// data.tags = data.tags
+			// 	? data.tags.filter(tag => !(tag.tag === '' && tag.value === ''))
+			// 	: data.tags;
+			// data.severities = data.severities
+			// 	? data.severities.filter((value, key) => value == key)
+			// 	: data.severities;
+			// data.page = this.refresh_url.getArgument('page') ?? 1;
 
-			if (!data.filter_custom_time) {
-				data.from = this.global_timerange.from;
-				data.to = this.global_timerange.to;
-			}
+			// if (!data.filter_custom_time) {
+			// 	data.from = this.global_timerange.from;
+			// 	data.to = this.global_timerange.to;
+			// }
 
 			Object.entries(data).forEach(([key, value]) => {
 				if (['filter_show_counter', 'filter_custom_time', 'action'].indexOf(key) !== -1) {
@@ -416,47 +335,47 @@
 				});
 		},
 
-		editHost(hostid) {
-			this.openHostPopup({hostid});
-		},
+		// editHost(hostid) {
+		// 	this.openHostPopup({hostid});
+		// },
 
-		openHostPopup(host_data) {
-			clearMessages();
+	// 	openHostPopup(host_data) {
+	// 		clearMessages();
 
-			const original_url = location.href;
-			const overlay = PopUp('popup.host.edit', host_data, {
-				dialogueid: 'host_edit',
-				dialogue_class: 'modal-popup-large',
-				prevent_navigation: true
-			});
+	// 		const original_url = location.href;
+	// 		const overlay = PopUp('popup.host.edit', host_data, {
+	// 			dialogueid: 'host_edit',
+	// 			dialogue_class: 'modal-popup-large',
+	// 			prevent_navigation: true
+	// 		});
 
-			overlay.$dialogue[0].addEventListener('dialogue.create', this.events.hostSuccess, {once: true});
-			overlay.$dialogue[0].addEventListener('dialogue.update', this.events.hostSuccess, {once: true});
-			overlay.$dialogue[0].addEventListener('dialogue.delete', this.events.hostSuccess, {once: true});
-			overlay.$dialogue[0].addEventListener('overlay.close', () => {
-				history.replaceState({}, '', original_url);
-			}, {once: true});
-		},
+	// 		overlay.$dialogue[0].addEventListener('dialogue.create', this.events.hostSuccess, {once: true});
+	// 		overlay.$dialogue[0].addEventListener('dialogue.update', this.events.hostSuccess, {once: true});
+	// 		overlay.$dialogue[0].addEventListener('dialogue.delete', this.events.hostSuccess, {once: true});
+	// 		overlay.$dialogue[0].addEventListener('overlay.close', () => {
+	// 			history.replaceState({}, '', original_url);
+	// 		}, {once: true});
+	// 	},
 
-		events: {
-			hostSuccess(e) {
-				const data = e.detail;
+	// 	events: {
+	// 		hostSuccess(e) {
+	// 			const data = e.detail;
 
-				if ('success' in data) {
-					const title = data.success.title;
-					let messages = [];
+	// 			if ('success' in data) {
+	// 				const title = data.success.title;
+	// 				let messages = [];
 
-					if ('messages' in data.success) {
-						messages = data.success.messages;
-					}
+	// 				if ('messages' in data.success) {
+	// 					messages = data.success.messages;
+	// 				}
 
-					addMessage(makeMessageBox('good', messages, title));
-				}
+	// 				addMessage(makeMessageBox('good', messages, title));
+	// 			}
 
-				uncheckTableRows('problem');
-				view.refreshResults();
-				view.refreshCounters();
-			}
-		}
-	};
+	// 			uncheckTableRows('problem');
+	// 			view.refreshResults();
+	// 			view.refreshCounters();
+	// 		}
+	// 	}
+	// };
 </script>
