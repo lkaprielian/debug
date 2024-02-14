@@ -159,7 +159,7 @@
 
 		// 		acknowledgePopUp({eventids: Object.keys(chkbxRange.getSelectedIds())}, this);
 		// 	});
-		// },
+		},
 
 
 		getCurrentResultsTable() {
