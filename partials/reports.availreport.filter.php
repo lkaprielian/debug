@@ -148,8 +148,8 @@ $template = (new CForm('get'))
 		(new CVar('filter_show_counter', '#{filter_show_counter}'))->removeId(),
 		(new CVar('filter_custom_time', '#{filter_custom_time}'))->removeId(),
 		(new CVar('from', '#{from}'))->removeId(),
-		(new CVar('to', '#{to}'))->removeId(),
-		(new CVar('hostids', '10616'))
+		(new CVar('to', '#{to}'))->removeId()
+		// (new CVar('hostids', '#{hostids}'))
 
 		// (new CVar('sort', '#{sort}'))->removeId(),
 		// (new CVar('sortorder', '#{sortorder}'))->removeId()
@@ -167,11 +167,21 @@ if (array_key_exists('render_html', $data)) {
 	return;
 }
 
-(new CTemplateTag('filter-reports-availreport'))
-	->setAttribute('data-template', 'reports.availreport.filter') ///here
-	->addItem($template)
-	->show();
-
+// (new CTemplateTag('filter-reports-availreport'))
+// 	->setAttribute('data-template', 'reports.availreport.filter') ///here
+// 	->addItem($template)
+// 	->show();
+$html_page->setControls((new CForm('get'))
+	->setAttribute('aria-label', _('Main filter'))
+	->addItem((new CList())
+		->addItem([
+			new CLabel(_('Mode'), $select_mode->getFocusableElementId()),
+			(new CDiv())->addClass(ZBX_STYLE_FORM_INPUT_MARGIN),
+			$select_mode
+		])
+	)
+	->setName('report2')
+);
 ?>
 <script type="text/javascript">
 	let template = document.querySelector('[data-template="reports.availreport.filter"]');
