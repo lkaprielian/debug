@@ -55,17 +55,22 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 	protected function doAction() {
 		$filter_tabs = [];
 
-		$profile = (new CTabFilterProfile(static::FILTER_IDX, static::FILTER_FIELDS_DEFAULT))->read();
-		if ($this->hasInput('filter_reset')) {
-			$profile->reset();
-		}
+		// $profile = (new CTabFilterProfile(static::FILTER_IDX, static::FILTER_FIELDS_DEFAULT))->read();
+		// if ($this->hasInput('filter_reset')) {
+		// 	$profile->reset();
+		// }
+
+		$filter_tabs = [];
+		$profile = (new CTabFilterProfile(static::FILTER_IDX, static::FILTER_FIELDS_DEFAULT))
+			->read()
+			->setInput($this->cleanInput($this->getInputAll()));
 		// elseif ($this->hasInput('filter_set')) {
 		// 	$profile->setTabFilter(0, ['filter_name' => ''] + $this->cleanInput($this->getInputAll()));
 		// 	$profile->update();
 		// }
-		else {
-			$profile->setInput($this->cleanInput($this->getInputAll()));
-		}
+		// else {
+		// 	$profile->setInput($this->cleanInput($this->getInputAll()));
+		// }
 
 		foreach ($profile->getTabsWithDefaults() as $index => $filter_tab) {
 			if ($index == $profile->selected) {
