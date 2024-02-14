@@ -50,31 +50,16 @@
 			this.refresh_simple_url = url.getUrl();
 
 			this.initFilter(filter_options);
-			$.subscribe('event.rank_change', () => view.refreshNow());
+			// $.subscribe('event.rank_change', () => view.refreshNow());
 
-			this.initAcknowledge();
-			this.initExpandables();
+			// this.initAcknowledge();
+			// this.initExpandables();
 
 			if (this.refresh_interval != 0) {
 				this.running = true;
 				this.scheduleRefresh();
 			}
 
-			$(document).on({
-				mouseenter: function() {
-					if ($(this)[0].scrollWidth > $(this)[0].offsetWidth) {
-						$(this).attr({title: $(this).text()});
-					}
-				},
-				mouseleave: function() {
-					if ($(this).is('[title]')) {
-						$(this).removeAttr('title');
-					}
-				}
-			}, 'table.<?= ZBX_STYLE_COMPACT_VIEW ?> a.<?= ZBX_STYLE_LINK_ACTION ?>');
-
-			// Activate blinking.
-			jqBlink.blink();
 		},
 		
 
@@ -102,11 +87,11 @@
 
 				this.refreshResults();
 				this.refreshCounters();
-				chkbxRange.clearSelectedOnFilterChange();
+				// chkbxRange.clearSelectedOnFilterChange();
 
 				if (this.active_filter !== this.filter._active_item) {
 					this.active_filter = this.filter._active_item;
-					chkbxRange.checkObjectAll(chkbxRange.pageGoName, false);
+					// chkbxRange.checkObjectAll(chkbxRange.pageGoName, false);
 				}
 			});
 
