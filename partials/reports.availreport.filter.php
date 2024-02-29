@@ -168,14 +168,14 @@ if (array_key_exists('render_html', $data)) {
 	return;
 }
 
-(new CTemplateTag('filter-monitoring-problem'))
-	->setAttribute('data-template', 'monitoring.problem.filter') ///here
+(new CTemplateTag('filter-reports-availreport'))
+	->setAttribute('data-template', 'monitoring.host.filter') ///here
 	->addItem($template)
 	->show();
 
 ?>
 <script type="text/javascript">
-	let template = document.querySelector('[data-template="monitoring.problem.filter"]');
+	let template = document.querySelector('[data-template="monitoring.host.filter"]');
 
 	function render(data, container) {
 		// "Save as" can contain only home tab, also home tab cannot contain "Update" button.
