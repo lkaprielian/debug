@@ -168,12 +168,12 @@ if (array_key_exists('render_html', $data)) {
 }
 
 (new CTemplateTag('filter-reports-availreport'))
-	->setAttribute('data-template', 'reports.availreport.filter')
+	->setAttribute('data-template', 'monitoring.problem.filter')
 	->addItem($template)
 	->show();
 ?>
 <script type="text/javascript">
-	let template = document.querySelector('[data-template="reports.availreport.filter"]');
+	let template = document.querySelector('[data-template="monitoring.problem.filter"]');
 
 	function render(data, container) {
 		// "Save as" can contain only home tab, also home tab cannot contain "Update" button.
