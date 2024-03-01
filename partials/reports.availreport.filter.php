@@ -142,13 +142,22 @@ $template = (new CForm('get'))
 	->cleanItems()
 	->setName('zbx_filter')
 	->addItem([
+		// $template,
+		// (new CSubmitButton(null))->addClass(ZBX_STYLE_FORM_SUBMIT_HIDDEN),
+		// (new CVar('filter_name', '#{filter_name}'))->removeId(),
+		// (new CVar('filter_show_counter', '#{filter_show_counter}'))->removeId(),
+		// (new CVar('filter_custom_time', '#{filter_custom_time}'))->removeId(),
+		// (new CVar('from', '#{from}'))->removeId(),
+		// (new CVar('to', '#{to}'))->removeId()
+
 		$template,
 		(new CSubmitButton(null))->addClass(ZBX_STYLE_FORM_SUBMIT_HIDDEN),
 		(new CVar('filter_name', '#{filter_name}'))->removeId(),
 		(new CVar('filter_show_counter', '#{filter_show_counter}'))->removeId(),
 		(new CVar('filter_custom_time', '#{filter_custom_time}'))->removeId(),
-		(new CVar('from', '#{from}'))->removeId(),
-		(new CVar('to', '#{to}'))->removeId()
+		(new CVar('sort', '#{sort}'))->removeId(),
+		(new CVar('sortorder', '#{sortorder}'))->removeId()
+		
 		// (new CVar('hostids', '#{hostids}'))->removeId()
 
 		// (new CVar('sort', '#{sort}'))->removeId(),
@@ -168,7 +177,7 @@ if (array_key_exists('render_html', $data)) {
 }
 
 (new CTemplateTag('filter-reports-availreport'))
-	->setAttribute('data-template', 'monitoring.host.filter')
+	->setAttribute('data-template', 'monitoring.problem.filter')
 	->addItem($template)
 	->show();
 ?>
