@@ -149,8 +149,7 @@ $template = (new CForm('get'))
 		(new CVar('filter_custom_time', '#{filter_custom_time}'))->removeId(),
 		(new CVar('from', '#{from}'))->removeId(),
 		(new CVar('to', '#{to}'))->removeId()
-
-		// (new CVar('hostids', '#{hostids}'))
+		// (new CVar('hostids', '#{hostids}'))->removeId()
 
 		// (new CVar('sort', '#{sort}'))->removeId(),
 		// (new CVar('sortorder', '#{sortorder}'))->removeId()
@@ -169,13 +168,12 @@ if (array_key_exists('render_html', $data)) {
 }
 
 (new CTemplateTag('filter-reports-availreport'))
-	->setAttribute('data-template', 'monitoring.host.filter') ///here
+	->setAttribute('data-template', 'reports.availreport.filter')
 	->addItem($template)
 	->show();
-
 ?>
 <script type="text/javascript">
-	let template = document.querySelector('[data-template="monitoring.host.filter"]');
+	let template = document.querySelector('[data-template="reports.availreport.filter"]');
 
 	function render(data, container) {
 		// "Save as" can contain only home tab, also home tab cannot contain "Update" button.
@@ -321,8 +319,8 @@ if (array_key_exists('render_html', $data)) {
 		// }
 
 		// Initialize src_url.
-		// this.resetUnsavedState();
-		// this.on(TABFILTERITEM_EVENT_ACTION, update.bind(this));
+		this.resetUnsavedState();
+		this.on(TABFILTERITEM_EVENT_ACTION, update.bind(this));
 	}
 
 	function expand(data, container) {
