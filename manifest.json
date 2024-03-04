@@ -14,8 +14,8 @@
       "layout": "layout.htmlpage"
     },
     "availreport.view.refresh": {
-      "class": "CControllerBGAvailReportView",
-      "view": "module.reports.availreport.view",
+      "class": "CControllerBGAvailReportViewRefresh",
+      "view": "module.reports.availreport.view.refresh",
       "layout": "layout.json"
     },
     "availreport.view.csv": {
