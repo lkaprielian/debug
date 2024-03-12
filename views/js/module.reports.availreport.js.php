@@ -38,6 +38,9 @@
 							}
 						});
 					}
+
+					// Save filter settings when they are changed
+					saveFilterSettings(this.filter.getFilterSettings());
 				});
 			}
 		}
@@ -53,17 +56,17 @@
 			},
 			getFiltersCounters: function() {
 				return $.post('zabbix.php', {
-						action: 'availreport.view.refresh',
-						filter_counters: 1
-					}).done((json) => {
-						if (json.filter_counters) {
-							this.filter.updateCounters(json.filter_counters);
-						}
-					}).always(() => {
-						if (this.refresh_interval >= 0) {
-							this.refresh_counters = this.createCountersRefresh(this.refresh_interval);
-						}
-					});
+					action: 'availreport.view.refresh',
+					filter_counters: 1
+				}).done((json) => {
+					if (json.filter_counters) {
+						this.filter.updateCounters(json.filter_counters);
+					}
+				}).always(() => {
+					if (this.refresh_interval >= 0) {
+						this.refresh_counters = this.createCountersRefresh(this.refresh_interval);
+					}
+				});
 			},
 			getCurrentForm: function() {
 				return $('form[name=availreport_view]');
@@ -93,11 +96,9 @@
 				return this.bindDataEvents(this.deferred);
 			},
 			setLoading: function() {
-				//this.getCurrentForm().addClass('is-loading is-loading-fadein delayed-15s');
 				$('div[id=reports_availreport_filter]').addClass('is-loading is-loading-fadein');
 			},
 			clearLoading: function() {
-				//this.getCurrentForm().removeClass('is-loading is-loading-fadein delayed-15s');
 				$('div[id=reports_availreport_filter]').removeClass('is-loading is-loading-fadein');
 			},
 			doRefresh: function(body) {
@@ -169,6 +170,7 @@
 					this.deferred.abort();
 				}
 			},
+
 			start: function() {
 				this.running = true;
 				this.refresh();
@@ -192,6 +194,14 @@
 	// 		window.availreport_page.refresh();
 	// 	}
 	// });
+	const FilterManager = {
+    // Function to save filter settings to local storage
+		saveFilterSettings: function(filterSettings) {
+			localStorage.setItem('filterSettings', JSON.stringify(filterSettings));
+    	},
+
+    // Other filter management functions...
+	};
 
 	const view = {
 		editHost(hostid) {
