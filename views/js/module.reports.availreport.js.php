@@ -189,15 +189,15 @@
 			}
 
 			loadFilterSettings: function() {
-            const filterSettings = loadFilterSettings();
-            if (filterSettings) {
-                // Set filter settings in your filter interface here
-                // For example:
-				$('#filter_name').val(filterSettings.filterName);
-				$('#filter_show_counter').val(filterSettings.filterShowCounter);
-                // Set more filter settings as needed
-            }
-        }
+				const filterSettings = loadFilterSettings();
+				if (filterSettings) {
+					// Set filter settings in your filter interface here
+					// For example:
+					$('#filter_name').val(filterSettings.filterName);
+					$('#filter_show_counter').val(filterSettings.filterShowCounter);
+					// Set more filter settings as needed
+				}
+        	}
 		};
 
 		window.availreport_page = new availreportPage();
