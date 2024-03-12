@@ -337,9 +337,6 @@ if (array_key_exists('render_html', $data)) {
 		}
 
 	}
-	function saveFilterSettings(filterSettings) {
-    	localStorage.setItem('filterSettings', JSON.stringify(filterSettings));
-	}
 
 	// Tab filter item events handlers.
 	template.addEventListener(TABFILTERITEM_EVENT_RENDER, function (ev) {
