@@ -25,6 +25,8 @@
 			this.running = false;
 			this.timeout = null;
 			this.deferred = null;
+			this.lastFilterSettings = null; // Variable to store last filter settings
+
 
 			if (filter_options) {
 				this.refresh_counters = this.createCountersRefresh(1);
@@ -53,6 +55,12 @@
 				});
 			}
 		}
+		// Save filter settings when they are changed
+		const currentFilterSettings = this.filter.getFilterSettings();
+			if (!this.lastFilterSettings || JSON.stringify(currentFilterSettings) !== JSON.stringify(this.lastFilterSettings)) {
+				this.lastFilterSettings = currentFilterSettings;
+				saveFilterSettings(currentFilterSettings);
+			}
 
 		availreportPage.prototype = {
 			createCountersRefresh: function(timeout) {
