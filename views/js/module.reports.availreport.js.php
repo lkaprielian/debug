@@ -18,6 +18,14 @@
 			if (filter_options) {
 				this.refresh_counters = this.createCountersRefresh(1);
 				this.filter = new CTabFilter($('#reports_availreport_filter')[0], filter_options);
+
+				// Save initial filter settings when the page loads
+				const initialFilterSettings = this.getInitialFilterSettings();
+				saveFilterSettings(initialFilterSettings);
+
+				// Update URL with initial filter settings
+				updateURLWithFilterSettings(initialFilterSettings);
+
 				this.filter.on(TABFILTER_EVENT_URLSET, (ev) => {
 					let url = new Curl('', false);
 
@@ -40,35 +48,33 @@
 						});
 					}
 
-					// Save filter settings when they are changed
+					// Save and update filter settings when they are changed
 					const currentFilterSettings = this.filter.getFilterSettings();
 					if (!this.lastFilterSettings || JSON.stringify(currentFilterSettings) !== JSON.stringify(this.lastFilterSettings)) {
 						this.lastFilterSettings = currentFilterSettings;
 						saveFilterSettings(currentFilterSettings);
-
-						// Update URL with filter settings
 						updateURLWithFilterSettings(currentFilterSettings);
 					}
 				});
+				// Apply initial filter settings when the page loads
+				this.filter.applyUrl();
 			}
 		}
 
 		availreportPage.prototype = {
 
-			updateURLWithFilterSettings: function(filterSettings) {
-				const url = new URL(this.refresh_url);
+			getInitialFilterSettings: function() {
+				const urlParams = new URLSearchParams(window.location.search);
 
-				// Update URL parameters with filter settings
-				url.searchParams.set('filter_name', filterSettings.filter_name);
-				url.searchParams.set('filter_show_counter', filterSettings.filter_show_counter);
-				url.searchParams.set('filter_custom_time', filterSettings.filter_custom_time);
-				url.searchParams.set('from', filterSettings.from);
-				url.searchParams.set('to', filterSettings.to);
+				return {
+					filter_name: urlParams.get('filter_name') || '',
+					filter_show_counter: urlParams.get('filter_show_counter') || '',
+					filter_custom_time: urlParams.get('filter_custom_time') || '',
+					from: urlParams.get('from') || '',
+					to: urlParams.get('to') || '',
+				};
+			},
 
-				// Replace the current URL with the updated one
-				history.replaceState({}, '', url);
-        	},
-			
 			createCountersRefresh: function(timeout) {
 				if (this.refresh_counters) {
 					clearTimeout(this.refresh_counters);
