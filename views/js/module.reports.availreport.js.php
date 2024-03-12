@@ -6,18 +6,6 @@
 ?>
 <script type="text/javascript">
 	jQuery(function($) {
-
-		// Define the saveFilterSettings function to save filter settings to local storage
-		function saveFilterSettings(filterSettings) {
-			localStorage.setItem('filterSettings', JSON.stringify(filterSettings));
-		}
-
-		// Function to load filter settings from local storage
-		function loadFilterSettings() {
-			const filterSettings = localStorage.getItem('filterSettings');
-			return filterSettings ? JSON.parse(filterSettings) : null;
-		}
-
 		function availreportPage() {
 			let filter_options = <?= json_encode($data['filter_options']) ?>;
 			this.refresh_url = '<?= $data['refresh_url'] ?>';
@@ -25,8 +13,6 @@
 			this.running = false;
 			this.timeout = null;
 			this.deferred = null;
-			this.lastFilterSettings = null; // Variable to store last filter settings
-
 
 			if (filter_options) {
 				this.refresh_counters = this.createCountersRefresh(1);
@@ -52,15 +38,12 @@
 							}
 						});
 					}
+
+					// Call saveFilterSettings function to save filter settings
+					saveFilterSettings(this.filter.getFilterSettings());
 				});
 			}
 		}
-		// Save filter settings when they are changed
-		const currentFilterSettings = this.filter.getFilterSettings();
-			if (!this.lastFilterSettings || JSON.stringify(currentFilterSettings) !== JSON.stringify(this.lastFilterSettings)) {
-				this.lastFilterSettings = currentFilterSettings;
-				saveFilterSettings(currentFilterSettings);
-			}
 
 		availreportPage.prototype = {
 			createCountersRefresh: function(timeout) {
@@ -189,26 +172,10 @@
 					this.deferred.abort();
 				}
 			},
-
 			start: function() {
 				this.running = true;
-				this.loadFilterSettings(); // Load filter settings when the page is loaded
 				this.refresh();
 			}
-
-			loadFilterSettings: function() {
-				const filterSettings = loadFilterSettings();
-				if (filterSettings) {
-					// Set filter settings in your filter interface here
-					// For example:
-					$('#filter_name').val(filterSettings.filterName);
-					$('#filter_show_counter').val(filterSettings.filterShowCounter);
-					$('#filter_custom_time').val(filterSettings.filterCustomTime);
-					$('#from').val(filterSettings.from);
-					$('#to').val(filterSettings.to);
-					// Set more filter settings as needed
-				}
-        	}
 		};
 
 		window.availreport_page = new availreportPage();
