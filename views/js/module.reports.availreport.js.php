@@ -195,6 +195,9 @@
 					// For example:
 					$('#filter_name').val(filterSettings.filterName);
 					$('#filter_show_counter').val(filterSettings.filterShowCounter);
+					$('#filter_custom_time').val(filterSettings.filterCustomTime);
+					$('#from').val(filterSettings.from);
+					$('#to').val(filterSettings.to);
 					// Set more filter settings as needed
 				}
         	}
