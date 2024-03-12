@@ -161,11 +161,6 @@ if (array_key_exists('render_html', $data)) {
 	 * javascript with additional event handling (dynamic rows, etc.) when page will be fully loaded and javascript
 	 * executed.
 	 */
-    $filterName = isset($data['filter_name']) ? $data['filter_name'] : '';
-    $filterShowCounter = isset($data['filter_show_counter']) ? $data['filter_show_counter'] : '';
-    $filterCustomTime = isset($data['filter_custom_time']) ? $data['filter_custom_time'] : '';
-    $from = isset($data['from']) ? $data['from'] : '';
-    $to = isset($data['to']) ? $data['to'] : '';
 
 	$template->show();
 

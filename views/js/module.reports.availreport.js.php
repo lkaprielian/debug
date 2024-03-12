@@ -13,6 +13,7 @@
 			this.running = false;
 			this.timeout = null;
 			this.deferred = null;
+			this.lastFilterSettings = null; // Variable to store last filter settings
 
 			if (filter_options) {
 				this.refresh_counters = this.createCountersRefresh(1);
@@ -38,11 +39,36 @@
 							}
 						});
 					}
+
+					// Save filter settings when they are changed
+					const currentFilterSettings = this.filter.getFilterSettings();
+					if (!this.lastFilterSettings || JSON.stringify(currentFilterSettings) !== JSON.stringify(this.lastFilterSettings)) {
+						this.lastFilterSettings = currentFilterSettings;
+						saveFilterSettings(currentFilterSettings);
+
+						// Update URL with filter settings
+						updateURLWithFilterSettings(currentFilterSettings);
+					}
 				});
 			}
 		}
 
 		availreportPage.prototype = {
+
+			updateURLWithFilterSettings: function(filterSettings) {
+				const url = new URL(this.refresh_url);
+
+				// Update URL parameters with filter settings
+				url.searchParams.set('filter_name', filterSettings.filter_name);
+				url.searchParams.set('filter_show_counter', filterSettings.filter_show_counter);
+				url.searchParams.set('filter_custom_time', filterSettings.filter_custom_time);
+				url.searchParams.set('from', filterSettings.from);
+				url.searchParams.set('to', filterSettings.to);
+
+				// Replace the current URL with the updated one
+				history.replaceState({}, '', url);
+        	},
+			
 			createCountersRefresh: function(timeout) {
 				if (this.refresh_counters) {
 					clearTimeout(this.refresh_counters);
