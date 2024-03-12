@@ -13,8 +13,6 @@
 			this.running = false;
 			this.timeout = null;
 			this.deferred = null;
-			this.lastFilterSettings = null; // Variable to store last filter settings
-
 
 			if (filter_options) {
 				this.refresh_counters = this.createCountersRefresh(1);
@@ -40,20 +38,7 @@
 							}
 						});
 					}
-
-					// Save filter settings when they are changed
-					const currentFilterSettings = this.filter.getFilterSettings();
-					if (!this.lastFilterSettings || JSON.stringify(currentFilterSettings) !== JSON.stringify(this.lastFilterSettings)) {
-						this.lastFilterSettings = currentFilterSettings;
-						saveFilterSettings(currentFilterSettings);
-					}
 				});
-				// Add event listener to handle filter action updates
-				this.filter.on(TABFILTERITEM_EVENT_ACTION, (ev) => {
-					// Reset unsaved state and update URL and save parameters
-					this.resetUnsavedState();
-					this.updateURLAndSaveParams();
-            	});
 			}
 		}
 
@@ -184,29 +169,12 @@
 					this.deferred.abort();
 				}
 			},
-			updateURLAndSaveParams: function() {
-				// Update URL and save parameters here based on current filter settings
-				// Example:
-				const filterSettings = this.filter.getFilterSettings();
-				const url = new Curl('', false);
-
-				// Update URL with filter settings
-				// Example: url.setArgument('filter_name', filterSettings.name);
-
-				// Update save parameters
-				// Example: saveParams.name = filterSettings.name;
-
-				// Save or update URL and save parameters as needed
-        	},
 			start: function() {
 				this.running = true;
 				this.refresh();
 			}
 		};
-		// Define the saveFilterSettings function to save filter settings to local storage
-		function saveFilterSettings(filterSettings) {
-			localStorage.setItem('filterSettings', JSON.stringify(filterSettings));
-		}
+
 		window.availreport_page = new availreportPage();
 		window.availreport_page.start();
 	});
