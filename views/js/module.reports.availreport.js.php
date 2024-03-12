@@ -6,6 +6,18 @@
 ?>
 <script type="text/javascript">
 	jQuery(function($) {
+
+		// Define the saveFilterSettings function to save filter settings to local storage
+		function saveFilterSettings(filterSettings) {
+			localStorage.setItem('filterSettings', JSON.stringify(filterSettings));
+		}
+
+		// Function to load filter settings from local storage
+		function loadFilterSettings() {
+			const filterSettings = localStorage.getItem('filterSettings');
+			return filterSettings ? JSON.parse(filterSettings) : null;
+		}
+
 		function availreportPage() {
 			let filter_options = <?= json_encode($data['filter_options']) ?>;
 			this.refresh_url = '<?= $data['refresh_url'] ?>';
@@ -38,9 +50,6 @@
 							}
 						});
 					}
-
-					// Save filter settings when they are changed
-					saveFilterSettings(this.filter.getFilterSettings());
 				});
 			}
 		}
@@ -56,17 +65,17 @@
 			},
 			getFiltersCounters: function() {
 				return $.post('zabbix.php', {
-					action: 'availreport.view.refresh',
-					filter_counters: 1
-				}).done((json) => {
-					if (json.filter_counters) {
-						this.filter.updateCounters(json.filter_counters);
-					}
-				}).always(() => {
-					if (this.refresh_interval >= 0) {
-						this.refresh_counters = this.createCountersRefresh(this.refresh_interval);
-					}
-				});
+						action: 'availreport.view.refresh',
+						filter_counters: 1
+					}).done((json) => {
+						if (json.filter_counters) {
+							this.filter.updateCounters(json.filter_counters);
+						}
+					}).always(() => {
+						if (this.refresh_interval >= 0) {
+							this.refresh_counters = this.createCountersRefresh(this.refresh_interval);
+						}
+					});
 			},
 			getCurrentForm: function() {
 				return $('form[name=availreport_view]');
@@ -96,9 +105,11 @@
 				return this.bindDataEvents(this.deferred);
 			},
 			setLoading: function() {
+				//this.getCurrentForm().addClass('is-loading is-loading-fadein delayed-15s');
 				$('div[id=reports_availreport_filter]').addClass('is-loading is-loading-fadein');
 			},
 			clearLoading: function() {
+				//this.getCurrentForm().removeClass('is-loading is-loading-fadein delayed-15s');
 				$('div[id=reports_availreport_filter]').removeClass('is-loading is-loading-fadein');
 			},
 			doRefresh: function(body) {
@@ -173,8 +184,20 @@
 
 			start: function() {
 				this.running = true;
+				this.loadFilterSettings(); // Load filter settings when the page is loaded
 				this.refresh();
 			}
+
+			loadFilterSettings: function() {
+            const filterSettings = loadFilterSettings();
+            if (filterSettings) {
+                // Set filter settings in your filter interface here
+                // For example:
+				$('#filter_name').val(filterSettings.filterName);
+				$('#filter_show_counter').val(filterSettings.filterShowCounter);
+                // Set more filter settings as needed
+            }
+        }
 		};
 
 		window.availreport_page = new availreportPage();
@@ -194,14 +217,6 @@
 	// 		window.availreport_page.refresh();
 	// 	}
 	// });
-	const FilterManager = {
-    // Function to save filter settings to local storage
-		saveFilterSettings: function(filterSettings) {
-			localStorage.setItem('filterSettings', JSON.stringify(filterSettings));
-    	},
-
-    // Other filter management functions...
-	};
 
 	const view = {
 		editHost(hostid) {
