@@ -75,6 +75,7 @@
 				$('.wrapper .msg-bad').remove();
 			},
 			refresh: function() {
+
 				// Update export_csv url according to what's in filter fields
 				const export_csv_url = new URL(this.refresh_url, 'http://example.com');
 				for(var key of export_csv_url.searchParams.keys()) {
@@ -88,7 +89,23 @@
 
 				this.setLoading();
 
-				this.deferred = $.getJSON(this.refresh_url);
+				const params = this.refresh_url.getArgumentsObject();
+				const exclude = ['action', 'filter_src', 'filter_show_counter', 'filter_custom_time', 'filter_name'];
+				const post_data = Object.keys(params)
+					.filter(key => !exclude.includes(key))
+					.reduce((post_data, key) => {
+						post_data[key] = (typeof params[key] === 'object')
+							? [...params[key]].filter(i => i)
+							: params[key];
+						return post_data;
+					}, {});
+
+				this.deferred = $.ajax({
+					url: this.refresh_simple_url,
+					data: post_data,
+					type: 'post',
+					dataType: 'json'
+				});
 
 				return this.bindDataEvents(this.deferred);
 			},
