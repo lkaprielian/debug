@@ -175,12 +175,12 @@ abstract class CControllerBGAvailReport extends CController {
 		];
 	}
 
-	// protected function cleanInput(array $input): array {
-	// 	if (array_key_exists('filter_reset', $input) && $input['filter_reset']) {
-	// 		return array_intersect_key(['filter_name' => ''], $input);
-	// 	}
-	// 	return $input;
-	// }
+	protected function cleanInput(array $input): array {
+		if (array_key_exists('filter_reset', $input) && $input['filter_reset']) {
+			return array_intersect_key(['filter_name' => ''], $input);
+		}
+		return $input;
+	}
 
 	protected function getAdditionalData($filter): array {
 		$data = [];
