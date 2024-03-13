@@ -15,7 +15,10 @@ abstract class CControllerBGAvailReport extends CController {
 
 	// Filter idx prefix.
 	// const FILTER_IDX = 'web.avail_report.filter';
-	const FILTER_IDX = 'web.monitoring.problem';
+	const FILTER_IDX = 'web.monitoring.host';
+
+	// const FILTER_IDX = 'web.monitoring.problem';
+
 
 	// Filter fields default values.
 	const FILTER_FIELDS_DEFAULT = [
@@ -36,6 +39,7 @@ abstract class CControllerBGAvailReport extends CController {
 	];
 
 	protected function getData(array $filter): array {
+
 		$host_group_ids = sizeof($filter['hostgroupids']) > 0 ? $this->getChildGroups($filter['hostgroupids']) : null;
 
 		$generating_csv_flag = 1;
