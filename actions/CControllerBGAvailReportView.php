@@ -61,7 +61,7 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 		// }
 
 		$filter_tabs = [];
-		$profile = (new CTabFilterProfile(static::FILTER_FIELDS_DEFAULT))
+		$profile = (new CTabFilterProfile(static::FILTER_IDX, static::FILTER_FIELDS_DEFAULT))
 			->read()
 			->setInput($this->cleanInput($this->getInputAll()));
 		// elseif ($this->hasInput('filter_set')) {
@@ -78,7 +78,7 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 				$filter_tab['filter_src']['filter_view_data'] = $this->getAdditionalData($filter_tab['filter_src']);
 			}
 
-			$filter_tabs[] = $filter_tab + ['filter_view_data' => $this->getAdditionalData($filter_tab)];
+			$filter_tabs[] =  ['filter_view_data' => $this->getAdditionalData($filter_tab)];
 		}
 
 		// filter
