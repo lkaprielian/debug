@@ -26,7 +26,7 @@
 ?>
 <script>
 	const view = {
-		host_view_form: null,
+		avail_report_form: null,
 		filter: null,
 		refresh_url: null,
 		refresh_simple_url: null,
@@ -50,7 +50,7 @@
 
 			this.initTabFilter(filter_options);
 
-			this.host_view_form = $('form[name=host_view]');
+			this.avail_report_form = $('form[name=avail_report]');
 			this.running = true;
 			this.refresh();
 		},
@@ -168,11 +168,11 @@
 		},
 
 		setLoading() {
-			this.host_view_form.addClass('is-loading is-loading-fadein delayed-15s');
+			this.avail_report_form.addClass('is-loading is-loading-fadein delayed-15s');
 		},
 
 		clearLoading() {
-			this.host_view_form.removeClass('is-loading is-loading-fadein delayed-15s');
+			this.avail_report_form.removeClass('is-loading is-loading-fadein delayed-15s');
 		},
 
 		bindDataEvents(deferred) {
@@ -191,8 +191,8 @@
 		onDataDone(response) {
 			this.clearLoading();
 			this._removeRefreshMessage();
-			this.host_view_form.replaceWith(response.body);
-			this.host_view_form = $('form[name=host_view]');
+			this.avail_report_form.replaceWith(response.body);
+			this.avail_report_form = $('form[name=avail_report]');
 
 			if ('groupids' in response) {
 				this.applied_filter_groupids = response.groupids;
@@ -214,10 +214,10 @@
 			const messages = $(jqXHR.responseText).find('.msg-global');
 
 			if (messages.length) {
-				this.host_view_form.html(messages);
+				this.avail_report_form.html(messages);
 			}
 			else {
-				this.host_view_form.html(jqXHR.responseText);
+				this.avail_report_form.html(jqXHR.responseText);
 			}
 		},
 
