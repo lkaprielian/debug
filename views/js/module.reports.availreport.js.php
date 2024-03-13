@@ -13,6 +13,8 @@
 			this.running = false;
 			this.timeout = null;
 			this.deferred = null;
+			this.host_view_form = $('form[name=availreport.view]');
+			
 
 			if (filter_options) {
 				this.refresh_counters = this.createCountersRefresh(1);
@@ -110,11 +112,13 @@
 				return this.bindDataEvents(this.deferred);
 			},
 			setLoading: function() {
-				this.getCurrentForm().addClass('is-loading is-loading-fadein delayed-15s');
+				// this.getCurrentForm().addClass('is-loading is-loading-fadein delayed-15s');
+				this.host_view_form.addClass('is-loading is-loading-fadein delayed-15s');
 				// $('div[id=reports_availreport_filter]').addClass('is-loading is-loading-fadein');
 			},
 			clearLoading: function() {
-				this.getCurrentForm().removeClass('is-loading is-loading-fadein delayed-15s');
+				// this.getCurrentForm().removeClass('is-loading is-loading-fadein delayed-15s');
+				this.host_view_form.addClass('is-loading is-loading-fadein delayed-15s');
 				// $('div[id=reports_availreport_filter]').removeClass('is-loading is-loading-fadein');
 			},
 			doRefresh: function(body) {
