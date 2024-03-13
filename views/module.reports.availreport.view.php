@@ -42,32 +42,16 @@ if ($data['action'] == 'availreport.view') {
 		$data['filter_options'] = null;
 	}
 
-	// $widget->addItem((new CForm())->setName('availreport_view')->addClass('is-loading'));
-	// $widget->show();
+	$widget->addItem((new CForm())->setName('availreport_view')->addClass('is-loading'));
+	$widget->show();
 
 	$this->includeJsFile('module.reports.availreport.js.php', $data);
 
-	$widget->addItem(new CPartial('reports.availreport.view.html', array_intersect_key($data,array_flip(['page', 'action', 'sort', 'sortorder', 'filter', 'tabfilter_idx']))))->show();
-
-	// (new CScriptTag('availreport_page.start();'))
-	// ->setOnDocumentReady()
-	// 	->show();
-	(new CScriptTag('
-		view.init('.json_encode([
-			'filter_options' => $data['filter_options'],
-			'refresh_url' => $data['refresh_url'],
-			'refresh_interval' => $data['refresh_interval'],
-			'filter_defaults' => $data['filter_defaults']
-		]).');
-	'))
-		->setOnDocumentReady()
+	(new CScriptTag('availreport_page.start();'))
+	->setOnDocumentReady()
 		->show();
 
 } else {
-
-	echo (new CPartial('reports.availreport.view.html', array_intersect_key($data,
-	array_flip(['page', 'action', 'sort', 'sortorder', 'filter', 'tabfilter_idx']))))->getOutput();
-
 	// $data['action'] = 'availreport.view.csv'
 	if (sizeof($data['triggers']) == 0) {
 		// Nothing to export
