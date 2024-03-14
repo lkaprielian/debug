@@ -156,6 +156,9 @@ $template = (new CForm('get'))
 		// (new CVar('sortorder', '#{sortorder}'))->removeId()
 	]);
 
+$filterParams = http_build_query($_GET);
+$template->setAction('?'.$filterParams);
+
 if (array_key_exists('render_html', $data)) {
 	/**
 	 * Render HTML to prevent filter flickering after initial page load. PHP created content will be replaced by
