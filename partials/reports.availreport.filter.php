@@ -138,23 +138,23 @@ $template = (new CDiv())
 	->addClass(ZBX_STYLE_FILTER_FORMS)
 	->addItem((new CDiv($filter_column))->addClass(ZBX_STYLE_CELL));
 
-// $template = (new CForm('get'))
-// 	->cleanItems()
-// 	->setName('zbx_filter')
-// 	->addItem([
-// 		$template,
-// 		(new CSubmitButton(null))->addClass(ZBX_STYLE_DISPLAY_NONE),
-// 		(new CVar('filter_name', '#{filter_name}'))->removeId(),
-// 		(new CVar('filter_show_counter', '#{filter_show_counter}'))->removeId(),
-// 		(new CVar('filter_custom_time', '#{filter_custom_time}'))->removeId(),
-// 		(new CVar('from', '#{from}'))->removeId(),
-// 		(new CVar('to', '#{to}'))->removeId()
-// 		// (new CVar('hostids', '#{hostids}'))->removeId()
+$template = (new CForm('get'))
+	->cleanItems()
+	->setName('zbx_filter')
+	->addItem([
+		$template,
+		(new CSubmitButton(null))->addClass(ZBX_STYLE_DISPLAY_NONE),
+		(new CVar('filter_name', '#{filter_name}'))->removeId(),
+		(new CVar('filter_show_counter', '#{filter_show_counter}'))->removeId(),
+		(new CVar('filter_custom_time', '#{filter_custom_time}'))->removeId(),
+		(new CVar('from', '#{from}'))->removeId(),
+		(new CVar('to', '#{to}'))->removeId()
+		// (new CVar('hostids', '#{hostids}'))->removeId()
 
 
-// 		// (new CVar('sort', '#{sort}'))->removeId(),
-// 		// (new CVar('sortorder', '#{sortorder}'))->removeId()
-// 	]);
+		// (new CVar('sort', '#{sort}'))->removeId(),
+		// (new CVar('sortorder', '#{sortorder}'))->removeId()
+	]);
 
 
 if (array_key_exists('render_html', $data)) {
@@ -163,24 +163,9 @@ if (array_key_exists('render_html', $data)) {
 	 * javascript with additional event handling (dynamic rows, etc.) when page will be fully loaded and javascript
 	 * executed.
 	 */
-    $filterName = isset($data['filter_name']) ? $data['filter_name'] : '';
-    $filterShowCounter = isset($data['filter_show_counter']) ? $data['filter_show_counter'] : '';
-    $filterCustomTime = isset($data['filter_custom_time']) ? $data['filter_custom_time'] : '';
-    $from = isset($data['from']) ? $data['from'] : '';
-    $to = isset($data['to']) ? $data['to'] : '';
-	// $template->show();
-	$template = (new CForm('get'))
-		->cleanItems()
-		->setName('zbx_filter')
-		->addItem([
-			$template,
-			(new CSubmitButton(null))->addClass(ZBX_STYLE_DISPLAY_NONE),
-			(new CVar('filter_name', $filterName))->removeId(),
-			(new CVar('filter_show_counter', $filterShowCounter))->removeId(),
-			(new CVar('filter_custom_time', $filterCustomTime))->removeId(),
-			(new CVar('from', $from))->removeId(),
-			(new CVar('to', $to))->removeId()
-		]);
+	echo '<button id="saveAsButton">Savee As</button>';
+	$template->show();
+
 	return;
 }
 
@@ -190,6 +175,18 @@ if (array_key_exists('render_html', $data)) {
 	->show();
 ?>
 <script type="text/javascript">
+	jQuery(function($) {
+		$('#saveAsButton').click(function() {
+			// Retrieve current filter settings
+			const currentFilterSettings = availreport_page.filter.getFilterSettings();
+
+			// Perform action to save filter settings
+			saveFilterSettings(currentFilterSettings);
+
+			// Optionally, perform any additional actions (e.g., show a confirmation message)
+			alert('Filter settings saved successfully.');
+    	});
+	});
 	let template = document.querySelector('[data-template="reports.availreport.filter"]');
 
 	function render(data, container) {
