@@ -75,6 +75,8 @@
 				$('.wrapper .msg-bad').remove();
 			},
 			refresh: function() {
+				this.setLoading();
+
 				// Update export_csv url according to what's in filter fields
 				const export_csv_url = new URL(this.refresh_url, 'http://example.com');
 				for(var key of export_csv_url.searchParams.keys()) {
@@ -86,7 +88,6 @@
 				var export_button = document.getElementById("export_csv");
 				export_button.setAttribute("data-url", csv_url);
 
-				this.setLoading();
 
 				this.deferred = $.getJSON(this.refresh_url);
 
