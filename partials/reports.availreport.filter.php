@@ -163,7 +163,6 @@ if (array_key_exists('render_html', $data)) {
 	 * javascript with additional event handling (dynamic rows, etc.) when page will be fully loaded and javascript
 	 * executed.
 	 */
-	echo '<button id="saveAsButton">Savee As</button>';
 	$template->show();
 
 	return;
@@ -175,18 +174,7 @@ if (array_key_exists('render_html', $data)) {
 	->show();
 ?>
 <script type="text/javascript">
-	jQuery(function($) {
-		$('#saveAsButton').click(function() {
-			// Retrieve current filter settings
-			const currentFilterSettings = availreport_page.filter.getFilterSettings();
 
-			// Perform action to save filter settings
-			saveFilterSettings(currentFilterSettings);
-
-			// Optionally, perform any additional actions (e.g., show a confirmation message)
-			alert('Filter settings saved successfully.');
-    	});
-	});
 	let template = document.querySelector('[data-template="reports.availreport.filter"]');
 
 	function render(data, container) {
@@ -325,6 +313,23 @@ if (array_key_exists('render_html', $data)) {
 					real_hosts: 1
 				}
 			}
+		});
+
+		// Add an event listener to the "Save As" button
+		$('[name="filter_new"]').click(function() {
+			// Capture the filter settings
+			let filterSettings = {
+				tpl_groupids: $('#tpl_groupids_' + data.uniqid).val(),
+				templateids: $('#templateids_' + data.uniqid).val(),
+				tpl_triggerids: $('#tpl_triggerids_' + data.uniqid).val(),
+				triggerids: $('#triggerids_' + data.uniqid).val(),
+				hostgroupids: $('#hostgroupids_' + data.uniqid).val(),
+				hostids: $('#hostids_' + data.uniqid).val(),
+				// Add other filter settings as needed
+			};
+
+			// Save the filter settings (you need to implement this function)
+			saveFilterSettings(filterSettings);
 		});
 
 		// let only_with_problems_checkbox = $('[name="only_with_problems"]');
