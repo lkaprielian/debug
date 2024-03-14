@@ -8,7 +8,6 @@ use CControllerResponseFatal;
 use CTabFilterProfile;
 use CUrl;
 use CWebUser;
-use Modules\LMFR\Classes\CBGProfile;
 
 class CControllerBGAvailReportView extends CControllerBGAvailReport {
 
@@ -84,63 +83,38 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 			$filter_tabs[] = $filter_tab + ['filter_view_data' => $this->getAdditionalData($filter_tab)];
 		}
 
-		$filter = [
-			'groupids' => CBGProfile::getArray('web.avail_report.filter.groupids'),
-			'hostids' => CBGProfile::getArray('web.avail_report.filter.hostids')
-		];
-		$view_curl = (new CUrl('zabbix.php'))->setArgument('action', 'availreport.view');
-
-		$refresh_curl = (new CUrl('zabbix.php'))
-			->setArgument('action', 'availreport.view.refresh')
-			->setArgument('filter_groupids', $filter['groupids'])
-			->setArgument('filter_hostids', $filter['hostids']);
-
 		// filter
-		// $filter = $filter_tabs[$profile->selected];
-		// $refresh_curl = (new CUrl('zabbix.php'));
-		// $filter['action'] = 'availreport.view.refresh';
-		// $filter['action_from_url'] = $this->getAction();
-		// array_map([$refresh_curl, 'setArgument'], array_keys($filter), $filter);
+		$filter = $filter_tabs[$profile->selected];
+		$refresh_curl = (new CUrl('zabbix.php'));
+		$filter['action'] = 'availreport.view.refresh';
+		$filter['action_from_url'] = $this->getAction();
+		array_map([$refresh_curl, 'setArgument'], array_keys($filter), $filter);
 		// $timeselector_from = $filter['filter_custom_time'] == 0 ? $filter['from'] : $profile->from;
 		// $timeselector_to = $filter['filter_custom_time'] == 0 ? $filter['to'] : $profile->to;
 		
-		// $data = [
-		// 	'action' => $this->getAction(),
-		// 	'tabfilter_idx' => static::FILTER_IDX,
-		// 	'filter' => $filter,
-		// 	'filter_view' => 'reports.availreport.filter',
-		// 	'filter_defaults' => $profile->filter_defaults,
-		// 	'tabfilter_options' => [
-		// 		'idx' => static::FILTER_IDX,
-		// 		'selected' => $profile->selected,
-		// 		'support_custom_time' => 1,
-		// 		'expanded' => $profile->expanded,
-		// 		'page' => $filter['page'],
-		// 		// 'timeselector' => [
-		// 		// 	'from' => $profile->from,
-		// 		// 	'to' => $profile->to,
-		// 		// 	'disabled' => true
-		// 		// ] + getTimeselectorActions($profile->from, $profile->to)
-		// 	],
-		// 	'filter_tabs' => $filter_tabs,
-		// 	'refresh_url' => $refresh_curl->getUrl(),
-		// 	'refresh_interval' => 3600000, //+++1000,
-		// 	'page' => $this->getInput('page', 1)
-		// ] + $this->getData($filter);
-
-		// $response = new CControllerResponseData($data);
-		// $response->setTitle(_('Availability report'));
-
-		// display
 		$data = [
 			'action' => $this->getAction(),
+			'tabfilter_idx' => static::FILTER_IDX,
 			'filter' => $filter,
-			'view_curl' => $view_curl,
+			'filter_view' => 'reports.availreport.filter',
+			'filter_defaults' => $profile->filter_defaults,
+			'tabfilter_options' => [
+				'idx' => static::FILTER_IDX,
+				'selected' => $profile->selected,
+				'support_custom_time' => 1,
+				'expanded' => $profile->expanded,
+				'page' => $filter['page'],
+				// 'timeselector' => [
+				// 	'from' => $profile->from,
+				// 	'to' => $profile->to,
+				// 	'disabled' => true
+				// ] + getTimeselectorActions($profile->from, $profile->to)
+			],
+			'filter_tabs' => $filter_tabs,
 			'refresh_url' => $refresh_curl->getUrl(),
-			'refresh_interval' => CWebUser::getRefresh() * 1000,
-			'active_tab' => CBGProfile::get('web.avail_report.filter.active', 1),
+			'refresh_interval' => 3600000, //+++1000,
 			'page' => $this->getInput('page', 1)
-		];
+		] + $this->getData($filter);
 
 		$response = new CControllerResponseData($data);
 		$response->setTitle(_('Availability report'));
