@@ -138,23 +138,23 @@ $template = (new CDiv())
 	->addClass(ZBX_STYLE_FILTER_FORMS)
 	->addItem((new CDiv($filter_column))->addClass(ZBX_STYLE_CELL));
 
-$template = (new CForm('get'))
-	->cleanItems()
-	->setName('zbx_filter')
-	->addItem([
-		$template,
-		(new CSubmitButton(null))->addClass(ZBX_STYLE_DISPLAY_NONE),
-		(new CVar('filter_name', '#{filter_name}'))->removeId(),
-		(new CVar('filter_show_counter', '#{filter_show_counter}'))->removeId(),
-		(new CVar('filter_custom_time', '#{filter_custom_time}'))->removeId(),
-		(new CVar('from', '#{from}'))->removeId(),
-		(new CVar('to', '#{to}'))->removeId()
-		// (new CVar('hostids', '#{hostids}'))->removeId()
+// $template = (new CForm('get'))
+// 	->cleanItems()
+// 	->setName('zbx_filter')
+// 	->addItem([
+// 		$template,
+// 		(new CSubmitButton(null))->addClass(ZBX_STYLE_DISPLAY_NONE),
+// 		(new CVar('filter_name', '#{filter_name}'))->removeId(),
+// 		(new CVar('filter_show_counter', '#{filter_show_counter}'))->removeId(),
+// 		(new CVar('filter_custom_time', '#{filter_custom_time}'))->removeId(),
+// 		(new CVar('from', '#{from}'))->removeId(),
+// 		(new CVar('to', '#{to}'))->removeId()
+// 		// (new CVar('hostids', '#{hostids}'))->removeId()
 
 
-		// (new CVar('sort', '#{sort}'))->removeId(),
-		// (new CVar('sortorder', '#{sortorder}'))->removeId()
-	]);
+// 		// (new CVar('sort', '#{sort}'))->removeId(),
+// 		// (new CVar('sortorder', '#{sortorder}'))->removeId()
+// 	]);
 
 
 if (array_key_exists('render_html', $data)) {
@@ -168,8 +168,19 @@ if (array_key_exists('render_html', $data)) {
     $filterCustomTime = isset($data['filter_custom_time']) ? $data['filter_custom_time'] : '';
     $from = isset($data['from']) ? $data['from'] : '';
     $to = isset($data['to']) ? $data['to'] : '';
-	$template->show();
-
+	// $template->show();
+	$template = (new CForm('get'))
+		->cleanItems()
+		->setName('zbx_filter')
+		->addItem([
+			$template,
+			(new CSubmitButton(null))->addClass(ZBX_STYLE_DISPLAY_NONE),
+			(new CVar('filter_name', $filterName))->removeId(),
+			(new CVar('filter_show_counter', $filterShowCounter))->removeId(),
+			(new CVar('filter_custom_time', $filterCustomTime))->removeId(),
+			(new CVar('from', $from))->removeId(),
+			(new CVar('to', $to))->removeId()
+		]);
 	return;
 }
 
