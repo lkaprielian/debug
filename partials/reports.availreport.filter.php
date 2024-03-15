@@ -199,7 +199,7 @@ if (array_key_exists('render_html', $data)) {
 			// Save the filter settings (you need to implement this function)
 			saveFilterSettings(filterSettings);
 		});
-		
+
 		// Template groups multiselect.
 		$('#tpl_groupids_' + data.uniqid, container).multiSelectHelper({
 			id: 'tpl_groupids_' + data.uniqid,

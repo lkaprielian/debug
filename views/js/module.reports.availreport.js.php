@@ -14,6 +14,8 @@
 			this.timeout = null;
 			this.deferred = null;
 
+
+
 			if (filter_options) {
 				this.refresh_counters = this.createCountersRefresh(1);
 				this.filter = new CTabFilter($('#reports_availreport_filter')[0], filter_options);
@@ -75,6 +77,7 @@
 				$('.wrapper .msg-bad').remove();
 			},
 			refresh: function() {
+
 				// Update export_csv url according to what's in filter fields
 				const export_csv_url = new URL(this.refresh_url, 'http://example.com');
 				for(var key of export_csv_url.searchParams.keys()) {
@@ -116,6 +119,19 @@
 					.always(this.onDataAlways.bind(this));
 
 				return deferred;
+			},
+			saveFilterSettings: function(filterSettings) {
+				$.ajax({
+					url: this.refresh_url, // Replace with the appropriate endpoint on your server
+					method: 'POST',
+					data: filterSettings,
+					success: function(response) {
+						console.log('Filter settings saved successfully:', response);
+					},
+					error: function(xhr, status, error) {
+						console.error('Error saving filter settings:', error);
+					}
+				});
 			},
 			onDataDone: function(response) {
 				this.clearLoading();
