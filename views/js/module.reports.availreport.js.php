@@ -122,7 +122,7 @@
 			},
 			saveFilterSettings: function(filterSettings) {
 				$.ajax({
-					url: this.refresh_url, // Replace with the appropriate endpoint on your server
+					url:  new URL(this.refresh_url, 'http://example.com'), // Replace with the appropriate endpoint on your server
 					method: 'POST',
 					data: filterSettings,
 					success: function(response) {
