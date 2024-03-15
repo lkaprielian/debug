@@ -182,6 +182,24 @@ if (array_key_exists('render_html', $data)) {
 		$('[name="filter_new"],[name="filter_update"]').hide()
 			.filter(data.filter_configurable ? '[name="filter_update"]' : '[name="filter_new"]').show();
 
+
+		// Add an event listener to the "Save As" button
+		$('[name="filter_new"]').click(function() {
+			// Capture the filter settings
+			let filterSettings = {
+				tpl_groupids: $('#tpl_groupids_' + data.uniqid).val(),
+				templateids: $('#templateids_' + data.uniqid).val(),
+				tpl_triggerids: $('#tpl_triggerids_' + data.uniqid).val(),
+				triggerids: $('#triggerids_' + data.uniqid).val(),
+				hostgroupids: $('#hostgroupids_' + data.uniqid).val(),
+				hostids: $('#hostids_' + data.uniqid).val(),
+				// Add other filter settings as needed
+			};
+
+			// Save the filter settings (you need to implement this function)
+			saveFilterSettings(filterSettings);
+		});
+		
 		// Template groups multiselect.
 		$('#tpl_groupids_' + data.uniqid, container).multiSelectHelper({
 			id: 'tpl_groupids_' + data.uniqid,
@@ -315,22 +333,6 @@ if (array_key_exists('render_html', $data)) {
 			}
 		});
 
-		// Add an event listener to the "Save As" button
-		$('[name="filter_new"]').click(function() {
-			// Capture the filter settings
-			let filterSettings = {
-				tpl_groupids: $('#tpl_groupids_' + data.uniqid).val(),
-				templateids: $('#templateids_' + data.uniqid).val(),
-				tpl_triggerids: $('#tpl_triggerids_' + data.uniqid).val(),
-				triggerids: $('#triggerids_' + data.uniqid).val(),
-				hostgroupids: $('#hostgroupids_' + data.uniqid).val(),
-				hostids: $('#hostids_' + data.uniqid).val(),
-				// Add other filter settings as needed
-			};
-
-			// Save the filter settings (you need to implement this function)
-			saveFilterSettings(filterSettings);
-		});
 
 		// let only_with_problems_checkbox = $('[name="only_with_problems"]');
 		// if (only_with_problems_checkbox.attr('unchecked-value') === data['only_with_problems']) {
@@ -342,11 +344,11 @@ if (array_key_exists('render_html', $data)) {
 		this.on(TABFILTERITEM_EVENT_ACTION, update.bind(this));
 	}
 
-	// function expand(data, container) {
-	// 	// "Save as" can contain only home tab, also home tab cannot contain "Update" button.
-	// 	$('[name="filter_new"],[name="filter_update"]').hide()
-	// 		.filter(data.filter_configurable ? '[name="filter_update"]' : '[name="filter_new"]').show();
-	// }
+	function expand(data, container) {
+		// "Save as" can contain only home tab, also home tab cannot contain "Update" button.
+		$('[name="filter_new"],[name="filter_update"]').hide()
+			.filter(data.filter_configurable ? '[name="filter_update"]' : '[name="filter_new"]').show();
+	}
 
 	function update(ev) {
 		let action = ev.detail.action,
