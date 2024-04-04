@@ -34,10 +34,10 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 			'from' =>			'range_time',
 			'to' =>				'range_time',
 			'filter_name' =>			'string',
-			'filter_custom_time' =>		'in 0',
-			'filter_show_counter' =>	'in 0',
-			'filter_counters' =>		'in 0',
-			'filter_set' =>				'in 0'
+			'filter_custom_time' =>		'in 1,0',
+			'filter_show_counter' =>	'in 1,0',
+			'filter_counters' =>		'in 1',
+			'filter_set' =>				'in 1'
 		];
 		$ret = $this->validateInput($fields) && $this->validateTimeSelectorPeriod();
 
