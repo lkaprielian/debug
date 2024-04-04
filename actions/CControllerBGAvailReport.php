@@ -14,9 +14,11 @@ use CWebUser;
 abstract class CControllerBGAvailReport extends CController {
 
 	// Filter idx prefix.
-	const FILTER_IDX = 'web.avail_report.filter';
+	// const FILTER_IDX = 'web.avail_report.filter';
+	const FILTER_IDX = 'web.toptriggers.filter'
 	// const FILTER_IDX = 'web.monitoring.host';
 	// const FILTER_IDX = 'web.monitoring.problem';
+
 
 
 	// Filter fields default values.
