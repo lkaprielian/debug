@@ -44,8 +44,10 @@ if ($data['action'] == 'availreport.view') {
 
 	$widget->addItem((new CForm())->setName('availreport_view')->addClass('is-loading'));
 	$widget->show();
+	
+	// $this->includeJsFile('module.reports.availreport.js.php', $data);
+	$this->includeJsFile('monitoring.host.view.js.php', $data);
 
-	$this->includeJsFile('module.reports.availreport.js.php', $data);
 
 	(new CScriptTag('availreport_page.start();'))
 	->setOnDocumentReady()
