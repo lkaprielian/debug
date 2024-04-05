@@ -383,7 +383,7 @@
 				refresh_url.setArgument(key, value);
 			});
 
-			refresh_url.setArgument('action', 'problem.view.refresh');
+			refresh_url.setArgument('action', 'availreport.view.refresh');
 			this.refresh_url = refresh_url;
 			this.refreshNow();
 		},
