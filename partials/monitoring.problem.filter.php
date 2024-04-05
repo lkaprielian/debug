@@ -143,7 +143,7 @@ $template = (new CForm('get'))
 	->setName('zbx_filter')
 	->addItem([
 		$template,
-		(new CSubmitButton(null))->addClass(ZBX_STYLE_DISPLAY_NONE),
+		(new CSubmitButton(null))->addClass(ZBX_STYLE_FORM_SUBMIT_HIDDEN),
 		(new CVar('filter_name', '#{filter_name}'))->removeId(),
 		(new CVar('filter_show_counter', '#{filter_show_counter}'))->removeId(),
 		(new CVar('filter_custom_time', '#{filter_custom_time}'))->removeId(),
@@ -151,11 +151,9 @@ $template = (new CForm('get'))
 		(new CVar('to', '#{to}'))->removeId()
 		// (new CVar('hostids', '#{hostids}'))->removeId()
 
-
 		// (new CVar('sort', '#{sort}'))->removeId(),
 		// (new CVar('sortorder', '#{sortorder}'))->removeId()
 	]);
-
 
 if (array_key_exists('render_html', $data)) {
 	/**
@@ -163,42 +161,24 @@ if (array_key_exists('render_html', $data)) {
 	 * javascript with additional event handling (dynamic rows, etc.) when page will be fully loaded and javascript
 	 * executed.
 	 */
+
 	$template->show();
 
 	return;
 }
 
 (new CTemplateTag('filter-reports-availreport'))
-	->setAttribute('data-template', 'reports.availreport.filter')
+	->setAttribute('data-template', 'monitoring.problem.filter')
 	->addItem($template)
 	->show();
 ?>
 <script type="text/javascript">
-
-	let template = document.querySelector('[data-template="reports.availreport.filter"]');
+	let template = document.querySelector('[data-template="monitoring.problem.filter"]');
 
 	function render(data, container) {
 		// "Save as" can contain only home tab, also home tab cannot contain "Update" button.
 		$('[name="filter_new"],[name="filter_update"]').hide()
 			.filter(data.filter_configurable ? '[name="filter_update"]' : '[name="filter_new"]').show();
-
-
-		// Add an event listener to the "Save As" button
-		$('[name="filter_new"]').click(function() {
-			// Capture the filter settings
-			let filterSettings = {
-				tpl_groupids: $('#tpl_groupids_' + data.uniqid).val(),
-				templateids: $('#templateids_' + data.uniqid).val(),
-				tpl_triggerids: $('#tpl_triggerids_' + data.uniqid).val(),
-				triggerids: $('#triggerids_' + data.uniqid).val(),
-				hostgroupids: $('#hostgroupids_' + data.uniqid).val(),
-				hostids: $('#hostids_' + data.uniqid).val(),
-				// Add other filter settings as needed
-			};
-
-			// Save the filter settings (you need to implement this function)
-			saveFilterSettings(filterSettings);
-		});
 
 		// Template groups multiselect.
 		$('#tpl_groupids_' + data.uniqid, container).multiSelectHelper({
@@ -332,7 +312,6 @@ if (array_key_exists('render_html', $data)) {
 				}
 			}
 		});
-
 
 		// let only_with_problems_checkbox = $('[name="only_with_problems"]');
 		// if (only_with_problems_checkbox.attr('unchecked-value') === data['only_with_problems']) {
