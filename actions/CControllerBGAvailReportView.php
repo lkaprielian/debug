@@ -96,7 +96,7 @@ class CControllerBGAvailReportView extends CControllerBGAvailReport {
 			'action' => $this->getAction(),
 			'tabfilter_idx' => static::FILTER_IDX,
 			'filter' => $filter,
-			'filter_view' => 'monitoring.problem.filter',
+			'filter_view' => 'filter-reports-availreport',
 			'filter_defaults' => $profile->filter_defaults,
 			'tabfilter_options' => [
 				'idx' => static::FILTER_IDX,
