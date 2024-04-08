@@ -19,9 +19,9 @@
 **/
 
 
-// /**
-//  * @var CPartial $this
-//  */
+/**
+ * @var CPartial $this
+ */
 
 $left_column = (new CFormList())
 	->addRow(_('Show'),
@@ -330,8 +330,8 @@ if (array_key_exists('render_html', $data)) {
 	return;
 }
 
-(new CTemplateTag('filter-monitoring-problem'))
-	->setAttribute('data-template', 'monitoring.problem.filter')
+(new CTemplateTag('filter-reports-availreport'))
+	->setAttribute('data-template', 'reports.availreport.filter')
 	->addItem($template)
 	->show();
 
@@ -389,7 +389,7 @@ if (array_key_exists('render_html', $data)) {
 
 ?>
 <script type="text/javascript">
-	let template = document.querySelector('[data-template="monitoring.problem.filter"]');
+	let template = document.querySelector('[data-template="reports.availreport.filter"]');
 
 	function render(data, container) {
 		// "Save as" can contain only home tab, also home tab cannot contain "Update" button.
