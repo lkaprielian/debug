@@ -47,7 +47,7 @@ $widget->addItem((new CForm())->setName('availreport_view')->addClass('is-loadin
 $widget->show();
 
 // $this->includeJsFile('module.reports.availreport.js.php', $data);
-$this->includeJsFile('monitoring.host.view.js.php', $data);
+$this->includeJsFile('monitoring.problem.view.js.php', $data);
 
 
 (new CScriptTag('
