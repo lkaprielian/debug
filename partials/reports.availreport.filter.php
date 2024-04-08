@@ -19,9 +19,9 @@
 **/
 
 
-/**
- * @var CPartial $this
- */
+// /**
+//  * @var CPartial $this
+//  */
 
 $left_column = (new CFormList())
 	->addRow(_('Show'),
